@@ -30,7 +30,7 @@ jobs:
             cd /var/www/
             sudo rm -rf /var/www/front
             mkdir -p /var/www/front
-            git clone https://github.com/TON-USERNAME/TON-FRONT.git .
+            git clone github.com/ESP-H26-Edgar/ESP-FRONT
 
             npm install
 
