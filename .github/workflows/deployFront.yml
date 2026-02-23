@@ -1,0 +1,45 @@
+name: Deploy Front
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Deploy Frontend
+        env:
+          USER_VM: ${{ secrets.USER_VM }}
+          IP_VM: ${{ secrets.IP_VM }}
+        run: |
+          ssh -o StrictHostKeyChecking=no $USER_VM@$IP_VM "
+            set -e
+
+            
+            cd /var/www/
+            sudo rm -rf /var/www/front
+            mkdir -p /var/www/front
+            git clone https://github.com/TON-USERNAME/TON-FRONT.git .
+
+            npm install
+
+            npm run build
+
+            # Copier uniquement dist
+            sudo cp -r dist/* /var/www/ESP
+
+            # Nettoyer
+            cd /var/www/front
+            rm -rf front
+          "
