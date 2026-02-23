@@ -1,46 +1,99 @@
 import { useState } from "react";
 import useFetch from "../service/useFetch";
+import "../style/loginStyle.scss";
+import { Mail, Lock } from "lucide-react";
+
+type MessageType = "success" | "error" | "";
 
 export default function Login() {
   const [mail, setMail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState<MessageType>("");
+  const [loading, setLoading] = useState(false);
   const { POST } = useFetch();
 
   const handleLogin = async () => {
-    try {
-      const data = await POST("/api/Login", { mail, password });
+    if (!mail || !password) {
+      setMessage("Veuillez remplir tous les champs");
+      setMessageType("error");
+      return;
+    }
 
-      if (data) {
-        setMessage(`Bienvenue ${data.mail}`);
+    setLoading(true);
+    setMessage("");
+
+    try {
+      const token = await POST<{ mail: string; password: string }, string>(
+        "/api/Login",
+        { mail, password },
+      );
+
+      if (token) {
+        localStorage.setItem("token", token);
+        setMessage("Connexion réussie !");
+        setMessageType("success");
+        // Redirige si besoin : window.location.href = "/dashboard";
       }
     } catch (err: any) {
-      console.error(err);
-      setMessage("Erreur d'identifiant");
+      console.log("status:", err.status);
+      console.log("message:", err.message);
+      try {
+        const errors = JSON.parse(err.message);
+        setMessage(errors[0]?.errorMessage || "Erreur de connexion");
+      } catch {
+        setMessage(err.message || "Erreur de connexion");
+      }
+
+      setMessageType("error");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="login-container">
-      <h2>Connexion</h2>
-      <input
-        type="text"
-        placeholder="Nom d'utilisateur"
-        value={mail}
-        onChange={(e) => setMail(e.target.value)}
-      />
-      <br />
-      <br />
-      <input
-        type="password"
-        placeholder="Mot de passe"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <br />
-      <br />
-      <button onClick={handleLogin}>Se connecter</button>
-      <p>{message}</p>
+    <div className="login-wrapper">
+      <div className="login-card">
+        <h2 className="login-title">Connexion</h2>
+
+        <div className="input-group">
+          <Mail size={18} className="input-icon" />
+          <input
+            type="text"
+            placeholder="Adresse email"
+            value={mail}
+            onChange={(e) => setMail(e.target.value)}
+          />
+        </div>
+
+        <div className="input-group">
+          <Lock size={18} className="input-icon" />
+          <input
+            type="password"
+            placeholder="Mot de passe"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleLogin()}
+          />
+        </div>
+
+        {message && (
+          <p
+            className={`login-message ${
+              messageType === "success" ? "success" : "error"
+            }`}
+          >
+            {message}
+          </p>
+        )}
+        <button
+          className="login-button"
+          onClick={handleLogin}
+          disabled={loading}
+        >
+          {loading ? "Connexion..." : "Se connecter"}
+        </button>
+      </div>
     </div>
   );
 }

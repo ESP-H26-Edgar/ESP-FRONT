@@ -82,18 +82,20 @@ const useFetch = () => {
 
   async function handleResponse<T>(response: Response): Promise<T | undefined> {
     if (!response.ok) {
-      if (response.status === 500) {
-        throw new Error("Internal server error");
-      } else if (response.status === 404) {
-        return undefined as T;
-      } else if (response.status === 400) {
-        throw new Error("Hmmmm, ton payload n<est pas bon");
-      } else {
-        throw new Error(`Error: ${response.status} - ${response.statusText}`);
-      }
+      const message = await response.text();
+      const error: any = new Error(message);
+      error.status = response.status;
+      throw error;
     }
-    return (await response.json()) as T;
+
+    const contentType = response.headers.get("Content-Type");
+    if (contentType && contentType.includes("application/json")) {
+      return (await response.json()) as T;
+    } else {
+      return (await response.text()) as unknown as T;
+    }
   }
+
   return { GET, POST, PATCH, DELETE, PUT };
 };
 export default useFetch;
