@@ -44,4 +44,7 @@ jobs:
             # Nettoyer
             cd /var/www/front
             rm -rf front
+
+            cd /var/www/ESP
+            npm start
           "
