@@ -4,7 +4,7 @@ const useFetch = () => {
   const GET = async <T>(url: string): Promise<T | undefined> => {
     try {
       const response = await fetch(`${baseurl}${url}`, {
-        credentials: "include", // ← ajouté
+        credentials: "include",
       });
       return handleResponse<T>(response);
     } catch (error) {
@@ -20,7 +20,7 @@ const useFetch = () => {
     try {
       const response = await fetch(`${baseurl}${url}`, {
         method: "POST",
-        credentials: "include", // ← ajouté
+        credentials: "include", 
         headers: {
           "Content-Type": "application/json",
         },
@@ -37,7 +37,7 @@ const useFetch = () => {
     try {
       const response = await fetch(`${baseurl}${url}`, {
         method: "DELETE",
-        credentials: "include", // ← ajouté
+        credentials: "include",
       });
       await handleResponse(response);
     } catch (error) {
@@ -53,7 +53,7 @@ const useFetch = () => {
     try {
       const response = await fetch(`${baseurl}${url}`, {
         method: "PUT",
-        credentials: "include", // ← ajouté
+        credentials: "include", 
         headers: {
           "Content-Type": "application/json",
         },
@@ -70,7 +70,7 @@ const useFetch = () => {
     try {
       const response = await fetch(`${baseurl}${url}`, {
         method: "PATCH",
-        credentials: "include", // ← ajouté
+        credentials: "include", 
         headers: {
           "Content-Type": "application/json",
         },
