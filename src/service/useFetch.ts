@@ -1,4 +1,4 @@
-const baseurl = "https://localhost:7227";
+const baseurl = "https://raceportal.edwrdledgar.me";
 
 const useFetch = () => {
   const GET = async <T>(url: string): Promise<T | undefined> => {
@@ -20,7 +20,7 @@ const useFetch = () => {
     try {
       const response = await fetch(`${baseurl}${url}`, {
         method: "POST",
-        credentials: "include", 
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
@@ -53,7 +53,7 @@ const useFetch = () => {
     try {
       const response = await fetch(`${baseurl}${url}`, {
         method: "PUT",
-        credentials: "include", 
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
@@ -70,7 +70,7 @@ const useFetch = () => {
     try {
       const response = await fetch(`${baseurl}${url}`, {
         method: "PATCH",
-        credentials: "include", 
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
