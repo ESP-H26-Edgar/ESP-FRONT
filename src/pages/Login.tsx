@@ -3,20 +3,16 @@ import useFetch from "../service/useFetch";
 import "../style/loginStyle.scss";
 import { Mail, Lock } from "lucide-react";
 
-type MessageType = "success" | "error" | "";
-
 export default function Login() {
   const [mail, setMail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
-  const [messageType, setMessageType] = useState<MessageType>("");
   const [loading, setLoading] = useState(false);
   const { POST } = useFetch();
 
   const handleLogin = async () => {
     if (!mail || !password) {
       setMessage("Veuillez remplir tous les champs");
-      setMessageType("error");
       return;
     }
     setLoading(true);
@@ -28,8 +24,8 @@ export default function Login() {
       });
 
       setMessage("Connexion réussie !");
-      setMessageType("success");
-      // window.location.href = "/dashboard";
+
+      window.location.href = "/Accueil";
     } catch (err: any) {
       console.log("status:", err.status);
       console.log("message:", err.message);
@@ -39,7 +35,6 @@ export default function Login() {
       } catch {
         setMessage(err.message || "Erreur de connexion");
       }
-      setMessageType("error");
     } finally {
       setLoading(false);
     }
@@ -71,15 +66,7 @@ export default function Login() {
           />
         </div>
 
-        {message && (
-          <p
-            className={`login-message ${
-              messageType === "success" ? "success" : "error"
-            }`}
-          >
-            {message}
-          </p>
-        )}
+        {message && <p>{message}</p>}
         <button
           className="login-button"
           onClick={handleLogin}
