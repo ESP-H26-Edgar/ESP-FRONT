@@ -19,22 +19,17 @@ export default function Login() {
       setMessageType("error");
       return;
     }
-
     setLoading(true);
     setMessage("");
-
     try {
-      const token = await POST<{ mail: string; password: string }, string>(
-        "/api/Login",
-        { mail, password },
-      );
+      await POST<{ mail: string; password: string }, void>("/api/Login", {
+        mail,
+        password,
+      });
 
-      if (token) {
-        localStorage.setItem("token", token);
-        setMessage("Connexion réussie !");
-        setMessageType("success");
-        // Redirige si besoin : window.location.href = "/dashboard";
-      }
+      setMessage("Connexion réussie !");
+      setMessageType("success");
+      // window.location.href = "/dashboard";
     } catch (err: any) {
       console.log("status:", err.status);
       console.log("message:", err.message);
@@ -44,7 +39,6 @@ export default function Login() {
       } catch {
         setMessage(err.message || "Erreur de connexion");
       }
-
       setMessageType("error");
     } finally {
       setLoading(false);
