@@ -1,8 +1,11 @@
 const baseurl = "https://localhost:7227";
+
 const useFetch = () => {
   const GET = async <T>(url: string): Promise<T | undefined> => {
     try {
-      const response = await fetch(`${baseurl}${url}`);
+      const response = await fetch(`${baseurl}${url}`, {
+        credentials: "include", // ← ajouté
+      });
       return handleResponse<T>(response);
     } catch (error) {
       console.error("Error fetching:", error);
@@ -17,12 +20,12 @@ const useFetch = () => {
     try {
       const response = await fetch(`${baseurl}${url}`, {
         method: "POST",
+        credentials: "include", // ← ajouté
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(body),
       });
-
       return handleResponse<T1 | undefined>(response);
     } catch (error) {
       console.error("Error posting:", error);
@@ -34,8 +37,8 @@ const useFetch = () => {
     try {
       const response = await fetch(`${baseurl}${url}`, {
         method: "DELETE",
+        credentials: "include", // ← ajouté
       });
-
       await handleResponse(response);
     } catch (error) {
       console.error("Error deleting:", error);
@@ -50,12 +53,12 @@ const useFetch = () => {
     try {
       const response = await fetch(`${baseurl}${url}`, {
         method: "PUT",
+        credentials: "include", // ← ajouté
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(body),
       });
-
       return handleResponse<T1>(response);
     } catch (error) {
       console.error("Error putting:", error);
@@ -67,12 +70,12 @@ const useFetch = () => {
     try {
       const response = await fetch(`${baseurl}${url}`, {
         method: "PATCH",
+        credentials: "include", // ← ajouté
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(body),
       });
-
       return handleResponse(response);
     } catch (error) {
       console.error("Error patching:", error);
@@ -87,7 +90,6 @@ const useFetch = () => {
       error.status = response.status;
       throw error;
     }
-
     const contentType = response.headers.get("Content-Type");
     if (contentType && contentType.includes("application/json")) {
       return (await response.json()) as T;
@@ -98,4 +100,5 @@ const useFetch = () => {
 
   return { GET, POST, PATCH, DELETE, PUT };
 };
+
 export default useFetch;
