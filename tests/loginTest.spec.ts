@@ -2,7 +2,7 @@
 import { test, expect } from "@playwright/test";
 
 test.beforeEach(async ({ page }) => {
-  await page.goto("http://localhost:5173/login");
+  await page.goto("https://raceportal.edwrdledgar.me/");
 });
 
 test("Affiche erreur si champs vides", async ({ page }) => {
