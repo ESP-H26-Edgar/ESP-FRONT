@@ -80,11 +80,10 @@
 /* ── HERO BANNER ──────────────────────────────────────── */
 .home-hero {
   position: relative;
-  padding: 120px 20px 60px;
+  padding: 140px 0 80px; /* descend le titre */
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 60px 0;
   overflow: hidden;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }

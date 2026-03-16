@@ -8,4 +8,5 @@ export interface Race {
   description: string;
   numberPlace: number;
   image: string;
+  price: number;
 }

@@ -78,7 +78,7 @@ export default function Accueil() {
               )}
             />
           </section>
-
+          <br />
           <section className="home-section">
             <h2 className="section-heading">Derniers résultats :</h2>
             <Carousel

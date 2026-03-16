@@ -5,6 +5,7 @@ import type { Race } from "../types/Race";
 import { useState, useEffect } from "react";
 import useFetch from "../service/useFetch";
 import { useLocation } from "react-router-dom";
+import logo from "../assets/Image1.png";
 
 export default function Inscription() {
   const [courses, setCourses] = useState<Race[]>([]);
@@ -47,6 +48,15 @@ export default function Inscription() {
           <CourseList courses={courses} perPage={3} />
         </div>
       </div>
+      <footer className="home-footer">
+        <div className="footer-brand">
+          <img src={logo} alt="RacePortal" className="footer-logo-img" />
+          <span className="footer-logo-text">RacePortal</span>
+        </div>
+        <span className="footer-copyright">
+          © {new Date().getFullYear()} RacePortal — Tous droits réservés
+        </span>
+      </footer>
     </div>
   );
 }
