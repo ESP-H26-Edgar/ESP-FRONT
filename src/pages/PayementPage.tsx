@@ -19,7 +19,6 @@ const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 function Form({ race }: { race: Race }) {
   const stripe = useStripe();
   const elements = useElements();
-  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -78,7 +77,7 @@ export default function PaiementPage() {
   const race = location.state?.race as Race | undefined;
   const clientSecret = location.state?.clientSecret as string | undefined;
 
-  const [error, setError] = useState<string | null>(null);
+  const [error] = useState<string | null>(null);
 
   useEffect(() => {
     if (!race || !clientSecret) {
