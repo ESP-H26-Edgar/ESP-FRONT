@@ -58,6 +58,8 @@ export default function FormulaireInscription() {
     setError(null);
 
     try {
+      console.log("race complet:", race);
+      console.log("price envoyé:", race?.price);
       const result = await POST<InscriptionPayload, { clientSecret: string }>(
         "/api/InscriptionCourse/initier-paiement",
         {
