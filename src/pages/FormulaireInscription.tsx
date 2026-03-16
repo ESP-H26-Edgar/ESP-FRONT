@@ -1,7 +1,7 @@
 import NavBar from "../componants/navBar";
 import "../style/homeStyle.scss";
 import "../style/FormulaireInscription.scss";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import logo from "../assets/Image1.png";
 import type { Race } from "../types/Race";
@@ -25,8 +25,16 @@ export default function FormulaireInscription() {
   const location = useLocation();
   const navigate = useNavigate();
   const race = location.state?.race as Race | undefined;
-  const { POST } = useFetch();
+  const { POST, GET } = useFetch();
+  const [currentUser, setCurrentUser] = useState<{ idUser: number } | null>(
+    null,
+  );
 
+  useEffect(() => {
+    GET<{ idUser: number }>("/api/Login/me").then((data) => {
+      if (data) setCurrentUser(data);
+    });
+  }, []);
   const [form, setForm] = useState<InscriptionForm>({
     Prenom: "",
     Nom: "",
@@ -51,10 +59,10 @@ export default function FormulaireInscription() {
 
     try {
       const result = await POST<InscriptionPayload, { clientSecret: string }>(
-        "/api/initier-paiement",
+        "/api/InscriptionCourse/initier-paiement",
         {
           idRace: race?.idRace,
-          idUser: undefined, // ← remplace par ton userId depuis le contexte auth
+          idUser: currentUser?.idUser,
           price: race?.price,
         },
       );
