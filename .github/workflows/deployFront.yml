@@ -32,7 +32,7 @@ jobs:
             mkdir -p /var/www/front
             cd /var/www/front
             git clone https://github.com/ESP-H26-Edgar/ESP-FRONT
-            cp /var/www/.env /var/www/front/ESP-Front
+            cp /var/www/.env /var/www/front/ESP-Front/.env
             cd /var/www/front/ESP-FRONT
             npm install
 
