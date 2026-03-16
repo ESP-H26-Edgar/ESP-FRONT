@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../style/Courselist.scss";
 import type { Race } from "../types/Race";
 
@@ -9,7 +10,7 @@ interface CourseListProps {
 
 export default function CourseList({ courses, perPage = 3 }: CourseListProps) {
   const [page, setPage] = useState(0);
-  
+  const navigate = useNavigate();
 
   const totalPages = Math.ceil(courses.length / perPage);
   const visible = courses.slice(page * perPage, page * perPage + perPage);
@@ -92,8 +93,23 @@ export default function CourseList({ courses, perPage = 3 }: CourseListProps) {
               <div className="course-row-meta">
                 <span>📅 {course.date}</span>
                 <span>📍 {course.location}</span>
+                <span>🗺️ {course.kilometer}km</span>
               </div>
               <p className="course-row-desc">{course.description}</p>
+              <p className="course-row-desc">
+                Nombre de places : {course.numberPlace}
+              </p>
+              <br />{" "}
+              <button
+                className="course-register-btn"
+                onClick={() =>
+                  navigate("/formulaireinscription", {
+                    state: { race: course },
+                  })
+                }
+              >
+                S'inscrire à la course
+              </button>
             </div>
           </div>
         ))}

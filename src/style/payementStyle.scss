@@ -1,0 +1,69 @@
+.paiement-title {
+  text-align: center;
+  font-size: 1.6rem;
+  margin-bottom: 1.5rem;
+  color: var(--accent, #e63946);
+}
+
+.paiement-loading {
+  text-align: center;
+  color: var(--text-muted, #aaa);
+  margin-top: 2rem;
+}
+
+.paiement-form {
+  max-width: 560px;
+  margin: 0 auto;
+  background: var(--card-bg, #1e1e2e);
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  .paiement-recap {
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 8px;
+    padding: 1rem 1.2rem;
+    border-left: 3px solid var(--accent, #e63946);
+
+    h3 {
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+      color: var(--text-muted, #aaa);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .recap-race {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 0.3rem;
+    }
+
+    .recap-detail {
+      font-size: 0.9rem;
+      color: var(--text-muted, #aaa);
+      margin-bottom: 0.5rem;
+    }
+
+    .recap-price {
+      font-size: 1rem;
+      strong {
+        color: var(--accent, #e63946);
+        font-size: 1.2rem;
+      }
+    }
+  }
+
+  .paiement-card-section {
+    h3 {
+      font-size: 1rem;
+      margin-bottom: 0.75rem;
+      color: var(--text-muted, #aaa);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+  }
+}
