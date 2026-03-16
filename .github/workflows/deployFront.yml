@@ -22,6 +22,7 @@ jobs:
         env:
           USER_VM: ${{ secrets.USER_VM }}
           IP_VM: ${{ secrets.IP_VM }}
+          VITE_STRIPE_PUBLIC_KEY: ${{ secrets.VITE_STRIPE_PUBLIC_KEY }}
         run: |
           ssh -o StrictHostKeyChecking=no $USER_VM@$IP_VM "
             set -e
