@@ -51,7 +51,7 @@ export default function FormulaireInscription() {
 
     try {
       const result = await POST<InscriptionPayload, { clientSecret: string }>(
-        "/api/Payment/initier-paiement",
+        "/api/initier-paiement",
         {
           idRace: race?.idRace,
           idUser: undefined, // ← remplace par ton userId depuis le contexte auth
