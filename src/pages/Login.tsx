@@ -1,6 +1,6 @@
 import { useState } from "react";
 import useFetch from "../service/useFetch";
-import "../style/loginStyle.scss";
+import "../style/Login.scss";
 import { Mail, Lock } from "lucide-react";
 
 export default function Login() {

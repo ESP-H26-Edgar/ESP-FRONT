@@ -9,20 +9,19 @@ import {
 } from "@stripe/react-stripe-js";
 import NavBar from "../componants/navBar";
 import "../style/homeStyle.scss";
-import "../style/payementStyle.scss";
+import "../style/Payement.scss";
 import logo from "../assets/Image1.png";
 import type { Race } from "../types/Race";
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
-// ─── Formulaire de carte ──────────────────────────────────────────────────────
 function Form({ race }: { race: Race }) {
   const stripe = useStripe();
   const elements = useElements();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handlePay = async (e: React.FormEvent) => {
+  const handlePay = async (e: React.ChangeEvent) => {
     e.preventDefault();
     if (!stripe || !elements) return;
 

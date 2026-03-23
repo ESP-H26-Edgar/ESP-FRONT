@@ -9,11 +9,13 @@ const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
 export default function PayementConfirmation() {
   const navigate = useNavigate();
-  const [status, setStatus] = useState<"success" | "error" | "loading">("loading");
+  const [status, setStatus] = useState<"success" | "error" | "loading">(
+    "loading",
+  );
 
   useEffect(() => {
     const clientSecret = new URLSearchParams(window.location.search).get(
-      "payment_intent_client_secret"
+      "payment_intent_client_secret",
     );
 
     if (!clientSecret) {
@@ -42,7 +44,6 @@ export default function PayementConfirmation() {
 
       <div className="home-main">
         <div className="home-content">
-
           {status === "loading" && (
             <p className="paiement-loading">Vérification du paiement...</p>
           )}
@@ -50,8 +51,11 @@ export default function PayementConfirmation() {
           {status === "success" && (
             <div className="form-success">
               <h3>✅ Paiement confirmé !</h3>
-              <p>Votre inscription est validée. Vous recevrez une confirmation par email.</p>
-              <button className="form-btn" onClick={() => navigate("/")}>
+              <p>
+                Votre inscription est validée. Vous recevrez une confirmation
+                par email.
+              </p>
+              <button className="form-btn" onClick={() => navigate("/Accueil")}>
                 Retour à l'accueil
               </button>
             </div>
@@ -61,12 +65,14 @@ export default function PayementConfirmation() {
             <div className="form-success">
               <h3>❌ Paiement échoué</h3>
               <p>Une erreur est survenue. Veuillez réessayer.</p>
-              <button className="form-btn" onClick={() => navigate("/inscription")}>
+              <button
+                className="form-btn"
+                onClick={() => navigate("/inscription")}
+              >
                 Réessayer
               </button>
             </div>
           )}
-
         </div>
       </div>
 
