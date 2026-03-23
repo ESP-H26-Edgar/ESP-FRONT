@@ -22,7 +22,7 @@ test("Connexion réussie avec bons identifiants", async ({ page }) => {
 });
 
 test("Affiche erreur avec mauvais identifiants", async ({ page }) => {
-  await page.fill("input[type='text']", "edgar@mail.com"); // email du screenshot
+  await page.fill("input[type='text']", "edgar@gmail.com");
   await page.fill("input[type='password']", "mauvaismdp");
   await page.click("button.login-button");
   const message = page.locator("text=Invalid username");
