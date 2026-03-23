@@ -1,5 +1,5 @@
 import NavBar from "../componants/navBar";
-import "../style/homeStyle.scss";
+import "../style/Home.scss";
 import "../style/FormulaireInscription.scss";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
