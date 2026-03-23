@@ -6,6 +6,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import logo from "../assets/Image1.png";
 import type { Race } from "../types/Race";
 import useFetch from "../service/useFetch";
+import { useAuthService } from "../service/authService";
 
 interface InscriptionForm {
   Prenom: string;
@@ -16,23 +17,24 @@ interface InscriptionForm {
   DateNaissance: string;
 }
 interface InscriptionPayload {
-  idRace: number;
-  idUser: number;
-  price: number;
+  idRace: number | undefined;
+  idUser: number | undefined;
+  price: number | undefined;
 }
 
 export default function FormulaireInscription() {
   const location = useLocation();
   const navigate = useNavigate();
-  const race = location.state?.race as Race;
-  const { POST, GET } = useFetch();
+  const race = location.state?.race as Race | undefined;
+  const { POST } = useFetch();
+  const { getMe } = useAuthService();
+
   const [currentUser, setCurrentUser] = useState<{ idUser: number } | null>(
     null,
   );
 
-  //Permet de donner l'id du user dans la requète de payement pour le transferer à l'api et l'ajouter dans la base de données
   useEffect(() => {
-    GET<{ idUser: number }>("/api/Login/me").then((data) => {
+    getMe().then((data) => {
       if (data) setCurrentUser(data);
     });
   }, []);
@@ -54,36 +56,29 @@ export default function FormulaireInscription() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e: React.SubmitEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(null);
-    if (!race?.idRace || !currentUser?.idUser || !race?.price) {
-      setError("Informations manquantes. Veuillez réessayer.");
-      return;
-    }
 
+    setError(null);
     try {
       const result = await POST<InscriptionPayload, { clientSecret: string }>(
         "/api/InscriptionCourse/initier-paiement",
         {
-          idRace: race.idRace,
-          idUser: currentUser.idUser,
+          idRace: race?.idRace,
+          idUser: currentUser?.idUser,
           price: race?.price,
         },
       );
-      if (!result || !result.clientSecret) {
-        setError("Impossible d'initialiser le paiement. Veuillez réessayer.");
-        return;
-      }
 
       navigate("/paiement", {
         state: {
-          clientSecret: result.clientSecret,
+          clientSecret: result?.clientSecret,
           race,
         },
       });
-    } catch {
-      setError("Une erreur est survenue. Veuillez réessayer.");
+    } catch (err: any) {
+      console.log("Erreur complète :", err);
+      setError(err?.message || "Erreur inconnue");
     }
   };
 
@@ -139,11 +134,11 @@ export default function FormulaireInscription() {
             </div>
 
             <div className="form-group">
-              <label htmlFor="mail">Mail</label>
+              <label htmlFor="Mail">Mail</label>
               <input
-                id="mail"
-                name="mail"
-                type="mail"
+                id="Mail"
+                name="Mail"
+                type="Mail"
                 value={form.Mail}
                 onChange={handleChange}
                 placeholder="jean.dupont@mail.com"
@@ -153,10 +148,10 @@ export default function FormulaireInscription() {
 
             <div className="form-row">
               <div className="form-group">
-                <label htmlFor="phone">Téléphone</label>
+                <label htmlFor="Phone">Téléphone</label>
                 <input
-                  id="phone"
-                  name="phone"
+                  id="Phone"
+                  name="Phone"
                   type="tel"
                   value={form.Phone}
                   onChange={handleChange}
@@ -175,10 +170,10 @@ export default function FormulaireInscription() {
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="sexe">Sexe</label>
+                <label htmlFor="Sexe">Sexe</label>
                 <select
-                  id="sexe"
-                  name="sexe"
+                  id="Sexe"
+                  name="Sexe"
                   value={form.Sexe}
                   onChange={handleSelectChange}
                   required

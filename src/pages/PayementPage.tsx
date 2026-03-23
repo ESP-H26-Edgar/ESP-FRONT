@@ -21,7 +21,7 @@ function Form({ race }: { race: Race }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handlePay = async (e: React.ChangeEvent) => {
+  const handlePay = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     if (!stripe || !elements) return;
 
