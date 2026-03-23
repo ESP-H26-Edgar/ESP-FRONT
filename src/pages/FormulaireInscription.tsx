@@ -10,26 +10,27 @@ import useFetch from "../service/useFetch";
 interface InscriptionForm {
   Prenom: string;
   Nom: string;
-  mail: string;
-  phone: string;
-  sexe: string;
+  Mail: string;
+  Phone: string;
+  Sexe: string;
   DateNaissance: string;
 }
 interface InscriptionPayload {
-  idRace: number | undefined;
-  idUser: number | undefined; // à adapter selon ton système d'auth
-  price: number | undefined;
+  idRace: number;
+  idUser: number;
+  price: number;
 }
 
 export default function FormulaireInscription() {
   const location = useLocation();
   const navigate = useNavigate();
-  const race = location.state?.race as Race | undefined;
+  const race = location.state?.race as Race;
   const { POST, GET } = useFetch();
   const [currentUser, setCurrentUser] = useState<{ idUser: number } | null>(
     null,
   );
 
+  //Permet de donner l'id du user dans la requète de payement pour le transferer à l'api et l'ajouter dans la base de données
   useEffect(() => {
     GET<{ idUser: number }>("/api/Login/me").then((data) => {
       if (data) setCurrentUser(data);
@@ -38,9 +39,9 @@ export default function FormulaireInscription() {
   const [form, setForm] = useState<InscriptionForm>({
     Prenom: "",
     Nom: "",
-    mail: "",
-    phone: "",
-    sexe: "",
+    Mail: "",
+    Phone: "",
+    Sexe: "",
     DateNaissance: "",
   });
 
@@ -53,25 +54,31 @@ export default function FormulaireInscription() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
     setError(null);
+    if (!race?.idRace || !currentUser?.idUser || !race?.price) {
+      setError("Informations manquantes. Veuillez réessayer.");
+      return;
+    }
 
     try {
-      console.log("race complet:", race);
-      console.log("price envoyé:", race?.price);
       const result = await POST<InscriptionPayload, { clientSecret: string }>(
         "/api/InscriptionCourse/initier-paiement",
         {
-          idRace: race?.idRace,
-          idUser: currentUser?.idUser,
+          idRace: race.idRace,
+          idUser: currentUser.idUser,
           price: race?.price,
         },
       );
+      if (!result || !result.clientSecret) {
+        setError("Impossible d'initialiser le paiement. Veuillez réessayer.");
+        return;
+      }
 
       navigate("/paiement", {
         state: {
-          clientSecret: result?.clientSecret,
+          clientSecret: result.clientSecret,
           race,
         },
       });
@@ -137,7 +144,7 @@ export default function FormulaireInscription() {
                 id="mail"
                 name="mail"
                 type="mail"
-                value={form.mail}
+                value={form.Mail}
                 onChange={handleChange}
                 placeholder="jean.dupont@mail.com"
                 required
@@ -151,7 +158,7 @@ export default function FormulaireInscription() {
                   id="phone"
                   name="phone"
                   type="tel"
-                  value={form.phone}
+                  value={form.Phone}
                   onChange={handleChange}
                   placeholder="418 985 5451"
                 />
@@ -172,7 +179,7 @@ export default function FormulaireInscription() {
                 <select
                   id="sexe"
                   name="sexe"
-                  value={form.sexe}
+                  value={form.Sexe}
                   onChange={handleSelectChange}
                   required
                 >

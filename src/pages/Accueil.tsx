@@ -2,7 +2,7 @@ import Carousel from "../componants/CarouselComponant";
 import AccueilCourseComponant from "../componants/AccueilCourseComponant";
 import AccueilResultComponant from "../componants/AcceuilResultComponant";
 import NavBar from "../componants/navBar";
-import "../style/homeStyle.scss";
+import "../style/Home.scss";
 import logo from "../assets/Image1.png";
 import { useEffect, useState } from "react";
 import useFetch from "../service/useFetch";
