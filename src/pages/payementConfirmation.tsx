@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { loadStripe } from "@stripe/stripe-js";
 import NavBar from "../componants/navBar";
-import "../style/homeStyle.scss";
+import "../style/Home.scss";
 import logo from "../assets/Image1.png";
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);

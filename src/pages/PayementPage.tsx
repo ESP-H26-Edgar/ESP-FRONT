@@ -8,7 +8,7 @@ import {
   useElements,
 } from "@stripe/react-stripe-js";
 import NavBar from "../componants/navBar";
-import "../style/homeStyle.scss";
+import "../style/Home.scss";
 import "../style/Payement.scss";
 import logo from "../assets/Image1.png";
 import type { Race } from "../types/Race";

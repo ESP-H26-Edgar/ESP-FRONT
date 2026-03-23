@@ -1,5 +1,5 @@
 import NavBar from "../componants/navBar";
-import "../style/homeStyle.scss";
+import "../style/Home.scss";
 import CourseList from "../componants/Courselist";
 import type { Race } from "../types/Race";
 import { useState, useEffect } from "react";
