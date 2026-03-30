@@ -4,20 +4,27 @@ import Inscription from "./pages/Inscription";
 import FormulaireInscription from "./pages/FormulaireInscription";
 import PaiementPage from "./pages/PayementPage";
 import PayementConfirmation from "./pages/payementConfirmation";
+import Admin from "./pages/AdminPanel";
 
 function App() {
   return (
     <Routes>
       <Route path="/" element={<Navigate to="/Accueil" replace />} />
 
-      <Route path="/Accueil" element={<Accueil />} />
-      <Route path="/inscription" element={<Inscription />} />
-      <Route
-        path="/formulaireInscription"
-        element={<FormulaireInscription />}
-      />
-      <Route path="/paiement" element={<PaiementPage />} />
-      <Route path="/paiement/confirmation" element={<PayementConfirmation />} />
+      <Route element={<VerifyLogin />}>
+        <Route path="/Accueil" element={<Accueil />} />
+        <Route path="/inscription" element={<Inscription />} />
+        <Route
+          path="/formulaireInscription"
+          element={<FormulaireInscription />}
+        />
+        <Route path="/paiement" element={<PaiementPage />} />
+        <Route
+          path="/paiement/confirmation"
+          element={<PayementConfirmation />}
+        />
+      </Route>
+      <Route path="/adminPanel" element={<Admin />} />
     </Routes>
   );
 }
