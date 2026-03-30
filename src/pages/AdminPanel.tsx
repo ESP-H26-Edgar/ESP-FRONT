@@ -4,19 +4,37 @@ import "../style/Admin.scss";
 import { useEffect, useState } from "react";
 import logo from "../assets/Image1.png";
 import type { Race } from "../types/Race";
+import type { Registration } from "../types/Registration";
 import useFetch from "../service/useFetch";
 
 export default function Admin() {
   const [courses, setCourses] = useState<Race[]>([]);
+  const [registrations, setRegistrations] = useState<Registration[]>([]);
   const { GET, DELETE } = useFetch();
 
   useEffect(() => {
     GET<Race[]>("/api/Race").then((data) => {
       if (data) setCourses(data);
     });
+    GET<Registration[]>("/api/InscriptionCourse").then((data) => {
+      if (data) setRegistrations(data);
+    });
   }, []);
 
+  const getRegisteredCount = (idRace: number) =>
+    registrations.filter((r) => r.idRace === idRace).length;
+
+  const getPlacesRestantes = (race: Race) =>
+    race.numberPlace - getRegisteredCount(race.idRace);
+
   const handleDelete = async (idRace: number) => {
+    const inscrits = getRegisteredCount(idRace);
+    if (inscrits > 0) {
+      alert(
+        `Impossible de supprimer cette course : ${inscrits} inscrit(s) sont enregistrés.`,
+      );
+      return;
+    }
     if (!confirm("Supprimer cette course ?")) return;
     await DELETE(`/api/Race/${idRace}`);
     setCourses((prev) => prev.filter((c) => c.idRace !== idRace));
@@ -24,13 +42,14 @@ export default function Admin() {
 
   const prochaines = courses.slice(0, 3);
 
-  //Merci à chat gpt pour l'affichage et la gestion des places réstantes
   const getStatut = (race: Race) => {
-    const restantes = race.numberPlace;
+    const restantes = getPlacesRestantes(race);
     const ratio = restantes / race.numberPlace;
-    if (ratio <= 0.05) return { label: "Complet", cls: "badge-red" };
-    if (ratio <= 0.2) return { label: "Presque complet", cls: "badge-amber" };
-    return { label: "Ouvert", cls: "badge-green" };
+    //gestion des places restantes : couleur + status
+    if (ratio <= 0) return { label: "Complet", couleur: "badge-red" };
+    if (ratio <= 0.2)
+      return { label: "Presque complet", couleur: "badge-amber" };
+    return { label: "Ouvert", couleur: "badge-green" };
   };
 
   return (
@@ -45,26 +64,36 @@ export default function Admin() {
 
       <div className="home-main">
         <div className="home-content">
-          {/* ── Cards places restantes ── */}
           <p className="admin-section-title">
             Places restantes — 3 prochaines courses
           </p>
           <div className="admin-cards-grid">
             {prochaines.map((race) => {
-              const pct = Math.round(
-                (race.numberPlace / race.numberPlace) * 100,
+              const restantes = getPlacesRestantes(race);
+              const placeRestantes = Math.round(
+                (restantes / race.numberPlace) * 100,
               );
               const fill =
-                pct > 80 ? "#E24B4A" : pct > 60 ? "#BA7517" : "#1D9E75";
+                placeRestantes <= 0
+                  ? "#E24B4A"
+                  : placeRestantes <= 20
+                    ? "#BA7517"
+                    : "#1D9E75";
+
               return (
                 <div className="admin-stat-card" key={race.idRace}>
                   <p className="admin-stat-label">{race.raceName}</p>
-                  <p className="admin-stat-value">{race.numberPlace}</p>
-                  <p className="admin-stat-sub">places restantes</p>
+                  <p className="admin-stat-value">{restantes}</p>
+                  <p className="admin-stat-sub">
+                    places restantes / {race.numberPlace}
+                  </p>
                   <div className="admin-progress-bar">
                     <div
                       className="admin-progress-fill"
-                      style={{ width: `${pct}%`, background: fill }}
+                      style={{
+                        width: `${Math.max(0, placeRestantes)}%`,
+                        background: fill,
+                      }}
                     />
                   </div>
                 </div>
@@ -76,14 +105,7 @@ export default function Admin() {
           <div className="admin-table-card">
             <div className="admin-table-header">
               <span className="admin-table-title">Gestion des courses</span>
-              <button
-                className="admin-btn-primary"
-                onClick={() => {
-                  /* navigate vers formulaire ajout */
-                }}
-              >
-                + Nouvelle course
-              </button>
+              <button className="admin-btn-primary">+ Nouvelle course</button>
             </div>
 
             <table className="admin-table">
@@ -92,7 +114,9 @@ export default function Admin() {
                   <th>Course</th>
                   <th>Date</th>
                   <th>Lieu</th>
-                  <th>Places</th>
+                  <th>Places totales</th>
+                  <th>Inscrits</th>
+                  <th>Restantes</th>
                   <th>Prix</th>
                   <th>Statut</th>
                   <th>Actions</th>
@@ -101,15 +125,19 @@ export default function Admin() {
               <tbody>
                 {courses.map((race) => {
                   const statut = getStatut(race);
+                  const inscrits = getRegisteredCount(race.idRace);
+                  const restantes = getPlacesRestantes(race);
                   return (
                     <tr key={race.idRace}>
                       <td>{race.raceName}</td>
                       <td>{race.date}</td>
                       <td>{race.location}</td>
                       <td>{race.numberPlace}</td>
+                      <td>{inscrits}</td>
+                      <td>{restantes}</td>
                       <td>{race.price} $CA</td>
                       <td>
-                        <span className={`admin-badge ${statut.cls}`}>
+                        <span className={`admin-badge ${statut.couleur}`}>
                           {statut.label}
                         </span>
                       </td>
