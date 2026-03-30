@@ -1,17 +1,7 @@
 import { Link } from "react-router-dom";
 import logo from "../assets/Image1.png";
-import { useAuthService, type CurrentUser } from "../service/authService";
-import { useEffect, useState } from "react";
 
 export default function navBar() {
-  const { getMe } = useAuthService();
-  const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null);
-
-  useEffect(() => {
-    getMe().then((data) => {
-      if (data) setCurrentUser(data);
-    });
-  }, []);
   return (
     <nav className="home-nav">
       <Link to="/Accueil" className="nav-logo-icon">
@@ -28,13 +18,7 @@ export default function navBar() {
           <Link to="/resultats">Résultats</Link>
         </li>
       </ul>
-      <div className="nav-profile">
-        {currentUser?.role === "Admin" ? (
-          <div className="nav-profile">⚙️</div>
-        ) : (
-          <div className="nav-profile">{currentUser?.role}</div>
-        )}
-      </div>
-    </nav> 
+      <div className="nav-profile">{<div className="nav-profile">⚙️</div>}</div>
+    </nav>
   );
 }
