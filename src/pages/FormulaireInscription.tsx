@@ -11,7 +11,7 @@ import { useAuthService } from "../service/authService";
 interface InscriptionForm {
   Prenom: string;
   Nom: string;
-  Mail: string;
+  AdresseMail: string;
   Phone: string;
   Sexe: string;
   DateNaissance: string;
@@ -20,6 +20,13 @@ interface InscriptionPayload {
   idRace: number | undefined;
   idUser: number | undefined;
   price: number | undefined;
+
+  Prenom: string;
+  Nom: string;
+  AdresseMail: string;
+  Phone: string;
+  Sexe: string;
+  DateNaissance: string;
 }
 
 export default function FormulaireInscription() {
@@ -41,7 +48,7 @@ export default function FormulaireInscription() {
   const [form, setForm] = useState<InscriptionForm>({
     Prenom: "",
     Nom: "",
-    Mail: "",
+    AdresseMail: "",
     Phone: "",
     Sexe: "",
     DateNaissance: "",
@@ -67,6 +74,13 @@ export default function FormulaireInscription() {
           idRace: race?.idRace,
           idUser: currentUser?.idUser,
           price: race?.price,
+
+          Prenom: form.Prenom,
+          Nom: form.Nom,
+          AdresseMail: form.AdresseMail,
+          Phone: form.Phone,
+          Sexe: form.Sexe,
+          DateNaissance: form.DateNaissance,
         },
       );
 
@@ -134,12 +148,12 @@ export default function FormulaireInscription() {
             </div>
 
             <div className="form-group">
-              <label htmlFor="Mail">Mail</label>
+              <label htmlFor="AdresseMail">Mail</label>
               <input
-                id="Mail"
-                name="Mail"
+                id="AdresseMail"
+                name="AdresseMail"
                 type="Mail"
-                value={form.Mail}
+                value={form.AdresseMail}
                 onChange={handleChange}
                 placeholder="jean.dupont@mail.com"
                 required
