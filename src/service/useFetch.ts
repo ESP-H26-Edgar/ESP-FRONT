@@ -1,4 +1,4 @@
-const baseurl = "https://raceportal.edwrdledgar.me/";
+const baseurl = "https://raceportal.edwrdledgar.me";
 
 const useFetch = () => {
   const GET = async <T>(url: string): Promise<T | undefined> => {
