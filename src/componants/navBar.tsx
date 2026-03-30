@@ -18,8 +18,9 @@ export default function navBar() {
           <Link to="/resultats">Résultats</Link>
         </li>
       </ul>
-      <div className="nav-profile">{<div className="nav-profile">⚙️</div>}</div>
-      <Link to="/login">Login</Link>
+      <Link to="/login" className="nav-profile">
+        ⚙️
+      </Link>
     </nav>
   );
 }
