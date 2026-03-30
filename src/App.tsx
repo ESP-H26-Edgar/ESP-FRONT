@@ -6,6 +6,7 @@ import VerifyLogin from "./componants/VerifyLogin";
 import FormulaireInscription from "./pages/FormulaireInscription";
 import PaiementPage from "./pages/PayementPage";
 import PayementConfirmation from "./pages/payementConfirmation";
+import Admin from "./pages/AdminPanel";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           element={<PayementConfirmation />}
         />
       </Route>
+      <Route path="/adminPanel" element={<Admin />} />
     </Routes>
   );
 }

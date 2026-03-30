@@ -30,11 +30,11 @@ export default function navBar() {
       </ul>
       <div className="nav-profile">
         {currentUser?.role === "Admin" ? (
-          <div className="nav-profile">⚙️</div>
+          <Link to="/adminPanel">⚙️</Link>
         ) : (
-          <div className="nav-profile">{currentUser?.role}</div>
+          <span>{currentUser?.role}</span>
         )}
       </div>
-    </nav> 
+    </nav>
   );
 }
