@@ -19,6 +19,7 @@ export default function navBar() {
         </li>
       </ul>
       <div className="nav-profile">{<div className="nav-profile">⚙️</div>}</div>
+      <Link to="/login">Login</Link>
     </nav>
   );
 }

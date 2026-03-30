@@ -4,6 +4,7 @@ import Inscription from "./pages/Inscription";
 import FormulaireInscription from "./pages/FormulaireInscription";
 import PaiementPage from "./pages/PayementPage";
 import PayementConfirmation from "./pages/payementConfirmation";
+import Login from "./pages/Login";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
       />
       <Route path="/paiement" element={<PaiementPage />} />
       <Route path="/paiement/confirmation" element={<PayementConfirmation />} />
+      <Route path="/login" element={<Login />}></Route>
     </Routes>
   );
 }
