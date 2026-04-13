@@ -30,17 +30,11 @@ jobs:
             APP_DIR=/var/www/front/ESP-FRONT
             DIST_DIR=/var/www/ESP
 
-            mkdir -p /var/www/front
-
-            if [ -d \"$APP_DIR\" ]; then
-              cd /var/www/front
-              rm -rf ESP-FRONT
-            fi
-
-            cd /var/www/front
-            git clone https://github.com/ESP-H26-Edgar/ESP-FRONT
-
             cd $APP_DIR
+
+            git reset --hard
+            git clean -fd
+            git pull origin main
 
             echo \"VITE_STRIPE_PUBLIC_KEY=$VITE_STRIPE_PUBLIC_KEY\" > .env
 
