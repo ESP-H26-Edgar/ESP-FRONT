@@ -3,9 +3,9 @@ import "../style/Home.scss";
 import "../style/FormulaireInscription.scss";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import logo from "../assets/Image1.png";
 import type { Race } from "../types/Race";
 import useFetch from "../service/useFetch";
+import Footer from "../componants/footer";
 
 interface InscriptionForm {
   Prenom: string;
@@ -197,15 +197,7 @@ export default function FormulaireInscription() {
         </div>
       </div>
 
-      <footer className="home-footer">
-        <div className="footer-brand">
-          <img src={logo} alt="RacePortal" className="footer-logo-img" />
-          <span className="footer-logo-text">RacePortal</span>
-        </div>
-        <span className="footer-copyright">
-          © {new Date().getFullYear()} RacePortal — Tous droits réservés
-        </span>
-      </footer>
+      <Footer />
     </div>
   );
 }

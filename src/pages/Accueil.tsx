@@ -2,8 +2,8 @@ import Carousel from "../componants/CarouselComponant";
 import AccueilCourseComponant from "../componants/AccueilCourseComponant";
 import AccueilResultComponant from "../componants/AcceuilResultComponant";
 import NavBar from "../componants/navBar";
+import Footer from "../componants/footer";
 import "../style/Home.scss";
-import logo from "../assets/Image1.png";
 import { useEffect, useState } from "react";
 import useFetch from "../service/useFetch";
 import type { Race } from "../types/Race";
@@ -98,16 +98,7 @@ export default function Accueil() {
           </a>
         </div>
       </main>
-
-      <footer className="home-footer">
-        <div className="footer-brand">
-          <img src={logo} alt="RacePortal" className="footer-logo-img" />
-          <span className="footer-logo-text">RacePortal</span>
-        </div>
-        <span className="footer-copyright">
-          © {new Date().getFullYear()} RacePortal — Tous droits réservés
-        </span>
-      </footer>
+      <Footer />
     </div>
   );
 }
