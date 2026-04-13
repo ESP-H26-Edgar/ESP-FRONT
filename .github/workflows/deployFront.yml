@@ -27,31 +27,23 @@ jobs:
           ssh -o StrictHostKeyChecking=no $USER_VM@$IP_VM "
             set -e
 
-            APP_DIR=/var/www/front/ESP-FRONT
-            DIST_DIR=/var/www/ESP
+            cd /var/www/
 
+            sudo rm -rf /var/www/front
             mkdir -p /var/www/front
 
-            if [ -d \"$APP_DIR/.git\" ]; then
-              echo 'Repo existant -> update'
+            cd /var/www/front
+            git clone https://github.com/ESP-H26-Edgar/ESP-FRONT
 
-              cd $APP_DIR
-              git reset --hard
-              git clean -fd
-              git pull origin main
-            else
-              echo 'Repo absent -> clone'
-
-              rm -rf $APP_DIR
-              git clone https://github.com/ESP-H26-Edgar/ESP-FRONT $APP_DIR
-              cd $APP_DIR
-            fi
+            cd /var/www/front/ESP-FRONT
 
             echo \"VITE_STRIPE_PUBLIC_KEY=$VITE_STRIPE_PUBLIC_KEY\" > .env
 
-            npm i
+            npm install
             npm run build
 
-            sudo rm -rf $DIST_DIR/*
-            sudo cp -r dist/* $DIST_DIR/
+            sudo cp -r dist/* /var/www/ESP
+
+            cd /var/www/front
+            rm -rf front
           "
