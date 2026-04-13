@@ -5,6 +5,7 @@ import FormulaireInscription from "./pages/FormulaireInscription";
 import PaiementPage from "./pages/PayementPage";
 import PayementConfirmation from "./pages/payementConfirmation";
 import Login from "./pages/Login";
+import Admin from "./pages/AdminPanel";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
       <Route path="/paiement" element={<PaiementPage />} />
       <Route path="/paiement/confirmation" element={<PayementConfirmation />} />
       <Route path="/login" element={<Login />}></Route>
+      <Route path="/admin" element={<Admin />}></Route>
     </Routes>
   );
 }

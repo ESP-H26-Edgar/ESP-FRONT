@@ -25,7 +25,7 @@ export default function Login() {
 
       setMessage("Connexion réussie !");
 
-      window.location.href = "/Accueil";
+      window.location.href = "/admin";
     } catch (err: any) {
       console.log("status:", err.status);
       console.log("message:", err.message);
