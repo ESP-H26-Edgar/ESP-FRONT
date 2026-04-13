@@ -30,6 +30,15 @@ export default function CourseList({ perPage = 3 }: { perPage?: number }) {
   const getInscrits = (idRace: number) =>
     registrations.filter((r) => r.idRace === idRace);
 
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+
+    return date.toLocaleDateString("fr", {
+      year: "numeric",
+      month: "numeric",
+      day: "numeric",
+    });
+  };
   return (
     <div className="course-list-wrapper">
       <h2 className="course-list-title">Liste des courses :</h2>
@@ -48,7 +57,7 @@ export default function CourseList({ perPage = 3 }: { perPage?: number }) {
               >
                 <div>
                   <p className="course-name">{course.raceName}</p>
-                  <p className="course-date">{course.date}</p>
+                  <p className="course-date">{formatDate(course.date)}</p>
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
                   <span className="course-badge">{course.kilometer} km</span>

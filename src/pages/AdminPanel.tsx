@@ -147,6 +147,7 @@ export default function Admin() {
                           <button
                             className="admin-action-btn danger"
                             onClick={() => handleDelete(race.idRace)}
+                            disabled={getRegisteredCount(race.idRace) > 0}
                           >
                             Supprimer
                           </button>
