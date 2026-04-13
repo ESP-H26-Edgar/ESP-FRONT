@@ -10,8 +10,8 @@ import {
 import NavBar from "../componants/navBar";
 import "../style/Home.scss";
 import "../style/Payement.scss";
-import logo from "../assets/Image1.png";
 import type { Race } from "../types/Race";
+import Footer from "../componants/footer";
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
@@ -121,15 +121,7 @@ export default function PaiementPage() {
         </div>
       </div>
 
-      <footer className="home-footer">
-        <div className="footer-brand">
-          <img src={logo} alt="RacePortal" className="footer-logo-img" />
-          <span className="footer-logo-text">RacePortal</span>
-        </div>
-        <span className="footer-copyright">
-          © {new Date().getFullYear()} RacePortal — Tous droits réservés
-        </span>
-      </footer>
+      <Footer />
     </div>
   );
 }

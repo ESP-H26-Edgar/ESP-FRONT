@@ -1,135 +1,121 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import "../style/Courselist.scss";
+import { useEffect, useState } from "react";
 import type { Race } from "../types/Race";
+import type { Registration } from "../types/Registration";
+import useFetch from "../service/useFetch";
+import "../style/listeInscrit.scss";
 
-interface CourseListProps {
-  courses: Race[]; // ← était Course[]
-  perPage?: number;
-}
-
-export default function CourseList({ courses, perPage = 3 }: CourseListProps) {
+export default function CourseList({ perPage = 3 }: { perPage?: number }) {
+  const [courses, setCourses] = useState<Race[]>([]);
+  const [registrations, setRegistrations] = useState<Registration[]>([]);
+  const [selectedRace, setSelectedRace] = useState<number | null>(null);
   const [page, setPage] = useState(0);
-  const navigate = useNavigate();
+  const { GET } = useFetch();
+
+  useEffect(() => {
+    GET<Race[]>("/api/Race").then((data) => {
+      if (data) setCourses(data);
+    });
+    GET<Registration[]>("/api/InscriptionCourse").then((data) => {
+      if (data) setRegistrations(data);
+    });
+  }, []);
 
   const totalPages = Math.ceil(courses.length / perPage);
   const visible = courses.slice(page * perPage, page * perPage + perPage);
-  console.log("visible:", visible);
+
+  const handleClick = (idRace: number) => {
+    setSelectedRace((prev) => (prev === idRace ? null : idRace));
+  };
+
+  const getInscrits = (idRace: number) =>
+    registrations.filter((r) => r.idRace === idRace);
+
   return (
     <div className="course-list-wrapper">
       <h2 className="course-list-title">Liste des courses :</h2>
 
       <div className="course-list">
-        {visible.map((course) => (
-          <div
-            className="course-row"
-            key={course.idRace}
-            id={`course-${course.idRace}`}
-          >
-            {/* Image circuit */}
-            <div className="course-row-image">
-              {course.image ? (
-                <img
-                  src={`https://raceportal.edwrdledgar.me/images/${course.image}`}
-                  alt={`Circuit ${course.raceName}`}
-                />
-              ) : (
-                <div className="course-row-map-placeholder">
-                  <svg
-                    viewBox="0 0 200 140"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
+        {visible.map((course) => {
+          const inscrits = getInscrits(course.idRace);
+          const isOpen = selectedRace === course.idRace;
+
+          return (
+            <div key={course.idRace}>
+              <div
+                className={`course-card ${isOpen ? "course-card--active" : ""}`}
+                onClick={() => handleClick(course.idRace)}
+                style={{ cursor: "pointer" }}
+              >
+                <div>
+                  <p className="course-name">{course.raceName}</p>
+                  <p className="course-date">{course.date}</p>
+                </div>
+                <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                  <span className="course-badge">{course.kilometer} km</span>
+                  <span className="course-badge">
+                    {inscrits.length} inscrit(s)
+                  </span>
+                  <span
+                    style={{
+                      fontSize: 12,
+                      color: "var(--color-text-secondary)",
+                    }}
                   >
-                    <rect
-                      width="200"
-                      height="140"
-                      fill="rgba(15,23,42,0.4)"
-                      rx="8"
-                    />
-                    <path
-                      d="M30 110 Q50 40 90 70 Q130 100 160 50 Q175 30 180 60"
-                      stroke="#f59e0b"
-                      strokeWidth="3"
-                      strokeLinecap="round"
-                      fill="none"
-                    />
-                    <path
-                      d="M30 110 Q50 40 90 70 Q130 100 160 50 Q175 30 180 60"
-                      stroke="#22c55e"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      fill="none"
-                      strokeDasharray="6 4"
-                      opacity="0.6"
-                    />
-                    <circle cx="30" cy="110" r="5" fill="#22c55e" />
-                    <circle cx="180" cy="60" r="5" fill="#ef4444" />
-                    <text
-                      x="20"
-                      y="128"
-                      fill="rgba(255,255,255,0.4)"
-                      fontSize="8"
-                      fontFamily="monospace"
-                    >
-                      START
-                    </text>
-                    <text
-                      x="165"
-                      y="52"
-                      fill="rgba(255,255,255,0.4)"
-                      fontSize="8"
-                      fontFamily="monospace"
-                    >
-                      END
-                    </text>
-                  </svg>
+                    {isOpen ? "▲" : "▼"}
+                  </span>
+                </div>
+              </div>
+
+              {isOpen && (
+                <div className="course-inscrits">
+                  {inscrits.length === 0 ? (
+                    <p className="inscrits-empty">
+                      Aucun inscrit pour cette course.
+                    </p>
+                  ) : (
+                    <table className="inscrits-table">
+                      <thead>
+                        <tr>
+                          <th>Dossard</th>
+                          <th>Nom</th>
+                          <th>Prénom</th>
+                          <th>Sexe</th>
+                          <th>Date de naissance</th>
+                          <th>Email</th>
+                          <th>Téléphone</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {inscrits.map((r) => (
+                          <tr key={r.idRegistration}>
+                            <td>#{r.bibNumber}</td>
+                            <td>{r.nom ?? "—"}</td>
+                            <td>{r.prenom ?? "—"}</td>
+                            <td>{r.sexe ?? "—"}</td>
+                            <td>{r.dateNaissance ?? "—"}</td>
+                            <td>{r.adresseMail ?? "—"}</td>
+                            <td>{r.phone ?? "—"}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  )}
                 </div>
               )}
             </div>
-
-            {/* Infos */}
-            <div className="course-row-info">
-              <h3 className="course-row-name">{course.raceName}</h3>
-              <div className="course-row-meta">
-                <span>📅 {course.date}</span>
-                <span>📍 {course.location}</span>
-                <span>🗺️ {course.kilometer}km</span>
-              </div>
-              <p className="course-row-desc">{course.description}</p>
-              <p className="course-row-desc">
-                Nombre de places : {course.numberPlace}
-              </p>
-              <br />{" "}
-              <button
-                className="course-register-btn"
-                onClick={() =>
-                  navigate("/formulaireinscription", {
-                    state: { race: course },
-                  })
-                }
-              >
-                S'inscrire à la course
-              </button>
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
-      {/* Pagination */}
       {totalPages > 1 && (
         <div className="course-list-pagination">
-          <button
-            className="pagination-btn"
-            onClick={() => setPage((p) => p - 1)}
-            disabled={page === 0}
-          >
+          <button onClick={() => setPage((p) => p - 1)} disabled={page === 0}>
             ←
           </button>
-          <span className="pagination-info">
+          <span>
             {page + 1} / {totalPages}
           </span>
           <button
-            className="pagination-btn"
             onClick={() => setPage((p) => p + 1)}
             disabled={page >= totalPages - 1}
           >
@@ -137,10 +123,6 @@ export default function CourseList({ courses, perPage = 3 }: CourseListProps) {
           </button>
         </div>
       )}
-
-      <a href="#top" className="return-top">
-        Return to top
-      </a>
     </div>
   );
 }

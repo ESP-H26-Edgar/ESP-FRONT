@@ -2,10 +2,10 @@ import NavBar from "../componants/navBar";
 import "../style/Home.scss";
 import "../style/Admin.scss";
 import { useEffect, useState } from "react";
-import logo from "../assets/Image1.png";
 import type { Race } from "../types/Race";
 import type { Registration } from "../types/Registration";
 import useFetch from "../service/useFetch";
+import Footer from "../componants/footer";
 
 export default function Admin() {
   const [courses, setCourses] = useState<Race[]>([]);
@@ -161,15 +161,7 @@ export default function Admin() {
         </div>
       </div>
 
-      <footer className="home-footer">
-        <div className="footer-brand">
-          <img src={logo} alt="RacePortal" className="footer-logo-img" />
-          <span className="footer-logo-text">RacePortal</span>
-        </div>
-        <span className="footer-copyright">
-          © {new Date().getFullYear()} RacePortal — Tous droits réservés
-        </span>
-      </footer>
+      <Footer />
     </div>
   );
 }
