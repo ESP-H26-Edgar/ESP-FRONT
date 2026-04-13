@@ -6,11 +6,13 @@ import type { Race } from "../types/Race";
 import type { Registration } from "../types/Registration";
 import useFetch from "../service/useFetch";
 import Footer from "../componants/footer";
+import AddRace from "../componants/AddRace";
 
 export default function Admin() {
   const [courses, setCourses] = useState<Race[]>([]);
   const [registrations, setRegistrations] = useState<Registration[]>([]);
   const { GET, DELETE } = useFetch();
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   useEffect(() => {
     GET<Race[]>("/api/Race").then((data) => {
@@ -20,7 +22,11 @@ export default function Admin() {
       if (data) setRegistrations(data);
     });
   }, []);
-
+  const handleCreated = () => {
+    GET<Race[]>("/api/Race").then((data) => {
+      if (data) setCourses(data);
+    });
+  };
   const getRegisteredCount = (idRace: number) =>
     registrations.filter((r) => r.idRace === idRace).length;
 
@@ -105,7 +111,17 @@ export default function Admin() {
           <div className="admin-table-card">
             <div className="admin-table-header">
               <span className="admin-table-title">Gestion des courses</span>
-              <button className="admin-btn-primary">+ Nouvelle course</button>
+              <button
+                className="admin-btn-primary"
+                onClick={() => setDrawerOpen(true)}
+              >
+                + Nouvelle course
+              </button>
+              <AddRace
+                open={drawerOpen}
+                onClose={() => setDrawerOpen(false)}
+                onCreated={handleCreated}
+              />
             </div>
 
             <table className="admin-table">
