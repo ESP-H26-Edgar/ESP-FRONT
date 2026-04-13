@@ -27,24 +27,26 @@ jobs:
           ssh -o StrictHostKeyChecking=no $USER_VM@$IP_VM "
             set -e
 
-            
-            cd /var/www/
-            sudo rm -rf /var/www/front
+            APP_DIR=/var/www/front/ESP-FRONT
+            DIST_DIR=/var/www/ESP
+
             mkdir -p /var/www/front
+
+            if [ -d \"$APP_DIR\" ]; then
+              cd /var/www/front
+              rm -rf ESP-FRONT
+            fi
+
             cd /var/www/front
             git clone https://github.com/ESP-H26-Edgar/ESP-FRONT
-            cd /var/www/front/ESP-FRONT
-            echo 'VITE_STRIPE_PUBLIC_KEY=$VITE_STRIPE_PUBLIC_KEY' > .env
-            npm install
 
+            cd $APP_DIR
+
+            echo \"VITE_STRIPE_PUBLIC_KEY=$VITE_STRIPE_PUBLIC_KEY\" > .env
+
+            npm ci
             npm run build
 
-            # Copier uniquement dist
-            sudo cp -r dist/* /var/www/ESP
-
-            # Nettoyer
-            cd /var/www/front
-            rm -rf front
-
-            
+            sudo rm -rf $DIST_DIR/*
+            sudo cp -r dist/* $DIST_DIR/
           "
