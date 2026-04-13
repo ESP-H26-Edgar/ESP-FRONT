@@ -18,6 +18,16 @@ export default function CourseListRegister({
   const totalPages = Math.ceil(courses.length / perPage);
   const visible = courses.slice(page * perPage, page * perPage + perPage);
   console.log("visible:", visible);
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+
+    return date.toLocaleDateString("fr", {
+      year: "numeric",
+      month: "numeric",
+      day: "numeric",
+    });
+  };
   return (
     <div className="course-list-wrapper">
       <h2 className="course-list-title">Liste des courses :</h2>
@@ -94,7 +104,7 @@ export default function CourseListRegister({
             <div className="course-row-info">
               <h3 className="course-row-name">{course.raceName}</h3>
               <div className="course-row-meta">
-                <span>📅 {course.date}</span>
+                <span>📅 {formatDate(course.date)}</span>
                 <span>📍 {course.location}</span>
                 <span>🗺️ {course.kilometer}km</span>
               </div>

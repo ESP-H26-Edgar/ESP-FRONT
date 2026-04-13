@@ -1,0 +1,54 @@
+.accueil-course-card {
+  cursor: pointer;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition:
+    transform 0.2s,
+    border-color 0.2s;
+
+  &:hover {
+    transform: translateY(-3px);
+    border-color: rgba(56, 189, 248, 0.3);
+  }
+
+  &__image {
+    height: 200px;
+    overflow: hidden;
+    flex-shrink: 0;
+
+    img,
+    svg {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center center;
+      display: block;
+    }
+  }
+
+  &__info {
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  &__name {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: white;
+    margin: 0;
+  }
+
+  &__meta {
+    font-size: 0.76rem;
+    color: rgba(255, 255, 255, 0.45);
+    font-weight: 300;
+    margin: 0;
+  }
+}

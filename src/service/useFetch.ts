@@ -18,13 +18,14 @@ const useFetch = () => {
     body: T,
   ): Promise<T1 | undefined> => {
     try {
+      const isFormData = body instanceof FormData;
       const response = await fetch(`${baseurl}${url}`, {
         method: "POST",
         credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(body),
+        headers: isFormData
+          ? undefined
+          : { "Content-Type": "application/json" },
+        body: isFormData ? body : JSON.stringify(body),
       });
       return handleResponse<T1 | undefined>(response);
     } catch (error) {
