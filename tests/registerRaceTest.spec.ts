@@ -5,14 +5,9 @@ test.beforeEach(async ({ page }) => {
 });
 
 test("Inscription à une course", async ({ page }) => {
-  await page.getByPlaceholder("Adresse email").fill("edgar@gmail.com");
-
-  await page.getByPlaceholder("Mot de passe").fill("123456");
-  await page.waitForTimeout(500);
-  await page.getByRole("button", { name: "Se connecter" }).click();
-  await page.waitForTimeout(500);
-
-  await page.locator(".course-card-map").first().click();
+  await page
+    .getByRole("img", { name: "Marathon de Montréal", exact: true })
+    .click();
 
   await page
     .locator("#course-1")
@@ -31,7 +26,7 @@ test("Inscription à une course", async ({ page }) => {
   await page.getByRole("textbox", { name: "Téléphone" }).fill("412874586");
   await page
     .getByRole("textbox", { name: "Date de naissance" })
-    .fill("2026-03-10");
+    .fill("2004-03-10");
   await page.getByLabel("Sexe").selectOption("H");
   await page.getByRole("button", { name: "S'inscrire" }).click();
   await page.waitForSelector("h2.paiement-title", { state: "visible" });
