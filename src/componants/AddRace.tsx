@@ -63,7 +63,8 @@ export default function AddRace({ open, onClose, onCreated }: AddRaceProps) {
       !form.numberPlace ||
       !form.price ||
       !form.distance ||
-      !form.image
+      !form.image ||
+      !form.description
     ) {
       setError("Veuillez remplir tous les champs obligatoires.");
       return;
@@ -119,7 +120,7 @@ export default function AddRace({ open, onClose, onCreated }: AddRaceProps) {
           {error && <p className="drawer__error">{error}</p>}
 
           <div className="drawer__field">
-            <label>Nom de la course *</label>
+            <label>Nom de la course </label>
             <input
               name="raceName"
               value={form.raceName}
@@ -128,7 +129,7 @@ export default function AddRace({ open, onClose, onCreated }: AddRaceProps) {
             />
           </div>
           <div className="drawer__field">
-            <label>Type de course *</label>
+            <label>Type de course </label>
             <select
               name="idRaceType"
               value={form.idRaceType}
@@ -149,16 +150,17 @@ export default function AddRace({ open, onClose, onCreated }: AddRaceProps) {
           </div>
           <div className="drawer__row">
             <div className="drawer__field">
-              <label>Date *</label>
+              <label>Date & heure *</label>
               <input
-                type="date"
+                type="datetime-local"
                 name="date"
                 value={form.date}
                 onChange={handleChange}
               />
             </div>
+
             <div className="drawer__field">
-              <label>Distance (km) *</label>
+              <label>Distance (km) </label>
               <input
                 type="number"
                 name="distance"
@@ -171,7 +173,7 @@ export default function AddRace({ open, onClose, onCreated }: AddRaceProps) {
           </div>
 
           <div className="drawer__field">
-            <label>Lieu *</label>
+            <label>Lieu</label>
             <input
               name="location"
               value={form.location}
@@ -182,7 +184,7 @@ export default function AddRace({ open, onClose, onCreated }: AddRaceProps) {
 
           <div className="drawer__row">
             <div className="drawer__field">
-              <label>Nombre de places *</label>
+              <label>Nombre de places </label>
               <input
                 type="number"
                 name="numberPlace"
@@ -193,7 +195,7 @@ export default function AddRace({ open, onClose, onCreated }: AddRaceProps) {
               />
             </div>
             <div className="drawer__field">
-              <label>Prix ($ CA) *</label>
+              <label>Prix ($ CA) </label>
               <input
                 type="number"
                 name="price"
