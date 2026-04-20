@@ -9,6 +9,7 @@ export default function CourseList({ perPage = 3 }: { perPage?: number }) {
   const [registrations, setRegistrations] = useState<Registration[]>([]);
   const [selectedRace, setSelectedRace] = useState<number | null>(null);
   const [page, setPage] = useState(0);
+  const [search, setSearch] = useState("");
   const { GET } = useFetch();
 
   useEffect(() => {
@@ -27,21 +28,46 @@ export default function CourseList({ perPage = 3 }: { perPage?: number }) {
     setSelectedRace((prev) => (prev === idRace ? null : idRace));
   };
 
-  const getInscrits = (idRace: number) =>
-    registrations.filter((r) => r.idRace === idRace);
+  const getInscrits = (idRace: number) => {
+    const inscrits = registrations.filter((r) => r.idRace === idRace);
+    if (!search.trim()) return inscrits;
+
+    const query = search.trim().toLowerCase();
+    return inscrits.filter(
+      (r) =>
+        r.nom?.toLowerCase().includes(query) ||
+        r.prenom?.toLowerCase().includes(query),
+    );
+  };
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-
     return date.toLocaleDateString("fr", {
       year: "numeric",
       month: "numeric",
       day: "numeric",
     });
   };
+
   return (
     <div className="course-list-wrapper">
       <h2 className="course-list-title">Liste des courses :</h2>
+
+      {/* Barre de recherche */}
+      <div className="course-search">
+        <input
+          type="text"
+          placeholder="Rechercher par nom ou prénom..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="course-search-input"
+        />
+        {search && (
+          <button className="course-search-clear" onClick={() => setSearch("")}>
+            ✕
+          </button>
+        )}
+      </div>
 
       <div className="course-list">
         {visible.map((course) => {
@@ -63,6 +89,7 @@ export default function CourseList({ perPage = 3 }: { perPage?: number }) {
                   <span className="course-badge">{course.kilometer} km</span>
                   <span className="course-badge">
                     {inscrits.length} inscrit(s)
+                    {search && ` trouvé(s)`}
                   </span>
                   <span
                     style={{
@@ -79,7 +106,9 @@ export default function CourseList({ perPage = 3 }: { perPage?: number }) {
                 <div className="course-inscrits">
                   {inscrits.length === 0 ? (
                     <p className="inscrits-empty">
-                      Aucun inscrit pour cette course.
+                      {search
+                        ? `Aucun résultat pour "${search}".`
+                        : "Aucun inscrit pour cette course."}
                     </p>
                   ) : (
                     <table className="inscrits-table">

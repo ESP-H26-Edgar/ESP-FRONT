@@ -153,3 +153,38 @@
     transform: translateY(0);
   }
 }
+.course-search {
+  position: relative;
+  margin-bottom: 1.5rem;
+
+  &-input {
+    width: 100%;
+    padding: 0.6rem 2.5rem 0.6rem 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+    color: var(--color-text);
+    font-size: 0.9rem;
+
+    &:focus {
+      outline: none;
+      border-color: var(--color-primary);
+    }
+  }
+
+  &-clear {
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-text-secondary);
+    font-size: 0.85rem;
+
+    &:hover {
+      color: var(--color-text);
+    }
+  }
+}
