@@ -14,6 +14,16 @@ export default function Admin() {
   const { GET, DELETE } = useFetch();
   const [drawerOpen, setDrawerOpen] = useState(false);
 
+  const isPastRace = (dateString: string) => {
+    const today = new Date();
+    const raceDate = new Date(dateString);
+
+    today.setHours(0, 0, 0, 0);
+    raceDate.setHours(0, 0, 0, 0);
+
+    return raceDate < today;
+  };
+
   useEffect(() => {
     GET<Race[]>("/api/Race").then((data) => {
       if (data) setCourses(data);
@@ -46,7 +56,10 @@ export default function Admin() {
     setCourses((prev) => prev.filter((c) => c.idRace !== idRace));
   };
 
-  const prochaines = courses.slice(0, 3);
+  const upcoming = courses.filter((r) => !isPastRace(r.date));
+  const past = courses.filter((r) => isPastRace(r.date));
+
+  const prochaines = upcoming.slice(0, 3);
 
   const getStatut = (race: Race) => {
     const restantes = getPlacesRestantes(race);
@@ -139,7 +152,7 @@ export default function Admin() {
                 </tr>
               </thead>
               <tbody>
-                {courses.map((race) => {
+                {upcoming.map((race) => {
                   const statut = getStatut(race);
                   const inscrits = getRegisteredCount(race.idRace);
                   const restantes = getPlacesRestantes(race);
@@ -169,6 +182,41 @@ export default function Admin() {
                           </button>
                         </div>
                       </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+          <div className="admin-table-card">
+            <div className="admin-table-header">
+              <span className="admin-table-title">Courses passées</span>
+            </div>
+
+            <table className="admin-table">
+              <thead>
+                <tr>
+                  <th>Course</th>
+                  <th>Date</th>
+                  <th>Lieu</th>
+                  <th>Inscrits</th>
+                  <th>Places</th>
+                  <th>Prix</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {past.map((race) => {
+                  const inscrits = getRegisteredCount(race.idRace);
+
+                  return (
+                    <tr key={race.idRace}>
+                      <td>{race.raceName}</td>
+                      <td>{new Date(race.date).toLocaleString("fr")}</td>
+                      <td>{race.location}</td>
+                      <td>{inscrits}</td>
+                      <td>{race.numberPlace}</td>
+                      <td>{race.price} $CA</td>
                     </tr>
                   );
                 })}

@@ -69,6 +69,10 @@ export default function AddRace({ open, onClose, onCreated }: AddRaceProps) {
       setError("Veuillez remplir tous les champs obligatoires.");
       return;
     }
+    if (form.numberPlace <= 0 || form.price <= 0 || form.distance <= 0) {
+      setError("Vous avez enregistré des valeur inférieures à 0.");
+      return;
+    }
     setError(null);
     setLoading(true);
 
@@ -117,8 +121,6 @@ export default function AddRace({ open, onClose, onCreated }: AddRaceProps) {
         </div>
 
         <div className="drawer__body">
-          {error && <p className="drawer__error">{error}</p>}
-
           <div className="drawer__field">
             <label>Nom de la course </label>
             <input
@@ -237,7 +239,7 @@ export default function AddRace({ open, onClose, onCreated }: AddRaceProps) {
             </label>
           </div>
         </div>
-
+        {error && <p className="drawer__error">{error}</p>}
         <div className="drawer__footer">
           <button className="drawer__btn-cancel" onClick={handleClose}>
             Annuler

@@ -17,8 +17,23 @@ export default function CourseListRegister({
   const [page, setPage] = useState(0);
   const navigate = useNavigate();
 
-  const totalPages = Math.ceil(courses.length / perPage);
-  const visible = courses.slice(page * perPage, page * perPage + perPage);
+  const isUpcomingRace = (dateString: string) => {
+    const today = new Date();
+    const raceDate = new Date(dateString);
+
+    today.setHours(0, 0, 0, 0);
+    raceDate.setHours(0, 0, 0, 0);
+
+    return raceDate >= today;
+  };
+  const filteredCourses = courses.filter((c) => isUpcomingRace(c.date));
+
+  const totalPages = Math.ceil(filteredCourses.length / perPage);
+
+  const visible = filteredCourses.slice(
+    page * perPage,
+    page * perPage + perPage,
+  );
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);

@@ -18,6 +18,16 @@ export default function AccueilCourseComponant({
 }: CourseCardProps) {
   const navigate = useNavigate();
 
+  const isPastRace = (dateString: string) => {
+    const today = new Date();
+    const raceDate = new Date(dateString);
+
+    today.setHours(0, 0, 0, 0);
+    raceDate.setHours(0, 0, 0, 0);
+
+    return raceDate < today;
+  };
+  if (isPastRace(date)) return null;
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("fr", {
       year: "numeric",
