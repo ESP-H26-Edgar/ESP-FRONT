@@ -139,12 +139,6 @@ export default function Inscription() {
                 </button>
               )}
             </div>
-
-            <p className="inscription-results-count">
-              {filteredCourses.length} course
-              {filteredCourses.length !== 1 ? "s" : ""} trouvée
-              {filteredCourses.length !== 1 ? "s" : ""}
-            </p>
           </div>
 
           <CourseListRegister

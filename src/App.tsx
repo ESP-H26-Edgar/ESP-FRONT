@@ -7,6 +7,7 @@ import PayementConfirmation from "./pages/payementConfirmation";
 import Login from "./pages/Login";
 import Admin from "./pages/AdminPanel";
 import ListeInscrit from "./pages/ListeInscrit";
+import ProtectedRoute from "./ProtectedRoute";
 
 function App() {
   return (
@@ -22,7 +23,15 @@ function App() {
       <Route path="/paiement" element={<PaiementPage />} />
       <Route path="/paiement/confirmation" element={<PayementConfirmation />} />
       <Route path="/login" element={<Login />}></Route>
-      <Route path="/admin" element={<Admin />}></Route>
+      <Route
+        path="/admin"
+        element={
+          <ProtectedRoute>
+            <Admin />
+          </ProtectedRoute>
+        }
+      />
+
       <Route path="/inscrits" element={<ListeInscrit />}></Route>
     </Routes>
   );
