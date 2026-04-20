@@ -73,6 +73,10 @@ export default function AddRace({ open, onClose, onCreated }: AddRaceProps) {
       setError("Vous avez enregistré des valeur inférieures à 0.");
       return;
     }
+    if (new Date(form.date) < new Date()) {
+      setError("La date n'est pas valide");
+      return;
+    }
     setError(null);
     setLoading(true);
 
