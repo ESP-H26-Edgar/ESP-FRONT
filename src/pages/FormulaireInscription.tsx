@@ -51,10 +51,60 @@ export default function FormulaireInscription() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  //aide de l'ia pour les vérifications dans le formulaire
+  const isValidEmail = (email: string) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
+
+  const isFutureDate = (date: string) => {
+    const today = new Date();
+    const inputDate = new Date(date);
+    return inputDate > today;
+  };
+
+  const isUnder13 = (date: string) => {
+    const today = new Date();
+    const birthDate = new Date(date);
+
+    let age = today.getFullYear() - birthDate.getFullYear();
+
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+    const dayDiff = today.getDate() - birthDate.getDate();
+
+    if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+      age--;
+    }
+
+    return age < 13;
+  };
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     setError(null);
+    if (
+      !form.Prenom ||
+      !form.Nom ||
+      !form.AdresseMail ||
+      !form.DateNaissance ||
+      !form.Sexe ||
+      !form.Phone
+    ) {
+      setError("Veuillez remplir tous les champs obligatoires.");
+      return;
+    }
+
+    if (!isValidEmail(form.AdresseMail)) {
+      setError("Adresse mail invalide.");
+      return;
+    }
+
+    if (isFutureDate(form.DateNaissance)) {
+      setError("La date de naissance ne peut pas être dans le futur.");
+      return;
+    }
+    if (isUnder13(form.DateNaissance)) {
+      setError("Vous devez avoir au moins 13 ans pour vous inscrire.");
+      return;
+    }
     try {
       const result = await POST<InscriptionPayload, { clientSecret: string }>(
         "/api/InscriptionCourse/initier-paiement",

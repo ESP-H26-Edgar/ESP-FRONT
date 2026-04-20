@@ -15,7 +15,7 @@ export default function ListeInscrit() {
         </header>
         <div className="home-main">
           <div className="home-content">
-            <CourseList perPage={3} />
+            <CourseList perPage={5} />
           </div>
         </div>
       </div>
