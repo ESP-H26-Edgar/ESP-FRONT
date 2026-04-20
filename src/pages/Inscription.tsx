@@ -1,6 +1,7 @@
 import NavBar from "../componants/navBar";
 import "../style/Home.scss";
 import type { Race } from "../types/Race";
+import type { Registration } from "../types/Registration";
 import { useState, useEffect } from "react";
 import useFetch from "../service/useFetch";
 import { useLocation } from "react-router-dom";
@@ -9,6 +10,7 @@ import Footer from "../componants/footer";
 
 export default function Inscription() {
   const [courses, setCourses] = useState<Race[]>([]);
+  const [registrations, setRegistrations] = useState<Registration[]>([]);
   const { GET } = useFetch();
   const location = useLocation();
 
@@ -16,9 +18,19 @@ export default function Inscription() {
     GET<Race[]>("/api/Race").then((data) => {
       if (data) setCourses(data);
     });
+    GET<Registration[]>("/api/InscriptionCourse").then((data) => {
+      if (data) setRegistrations(data);
+    });
   }, []);
 
-  //permet de "scroller" automatiquement au niveau de la course cliquée à l'acceuil
+  const registeredCounts = registrations.reduce<Record<number, number>>(
+    (acc, r) => {
+      acc[r.idRace] = (acc[r.idRace] ?? 0) + 1;
+      return acc;
+    },
+    {},
+  );
+
   useEffect(() => {
     if (location.hash && courses.length > 0) {
       setTimeout(() => {
@@ -29,6 +41,7 @@ export default function Inscription() {
       }, 100);
     }
   }, [location.hash, courses]);
+
   useEffect(() => {
     if (!location.hash) {
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -45,7 +58,11 @@ export default function Inscription() {
       </header>
       <div className="home-main">
         <div className="home-content">
-          <CourseListRegister courses={courses} perPage={3} />
+          <CourseListRegister
+            courses={courses}
+            perPage={3}
+            registeredCounts={registeredCounts}
+          />
         </div>
       </div>
       <Footer />

@@ -146,7 +146,7 @@ export default function Admin() {
                   return (
                     <tr key={race.idRace}>
                       <td>{race.raceName}</td>
-                      <td>{race.date}</td>
+                      <td>{new Date(race.date).toLocaleString("fr")}</td>
                       <td>{race.location}</td>
                       <td>{race.numberPlace}</td>
                       <td>{inscrits}</td>
