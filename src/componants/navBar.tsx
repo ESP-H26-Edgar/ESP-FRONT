@@ -15,7 +15,7 @@ export default function navBar() {
           <Link to="/inscrits">Liste des inscrits</Link>
         </li>
         <li>
-          <Link to="/resultats">Résultats</Link>
+          <Link to="/results">Résultats</Link>
         </li>
       </ul>
       <Link to="/login" className="nav-profile">

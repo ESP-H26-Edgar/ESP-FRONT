@@ -2,7 +2,7 @@
 import { test, expect } from "@playwright/test";
 
 test.beforeEach(async ({ page }) => {
-  await page.goto("https://raceportal.edwrdledgar.me/");
+  await page.goto("https://raceportal.edwrdledgar.me/login");
 });
 
 test("Affiche erreur si champs vides", async ({ page }) => {
@@ -17,7 +17,7 @@ test("Connexion réussie avec bons identifiants", async ({ page }) => {
   await page.fill("input[type='text']", "edgar@gmail.com");
   await page.fill("input[type='password']", "123456");
   await page.click("button.login-button");
-  await expect(page).toHaveURL("https://raceportal.edwrdledgar.me/Accueil");
+  await expect(page).toHaveURL("https://raceportal.edwrdledgar.me/admin");
   await expect(page.locator("nav")).toBeVisible();
 });
 
@@ -25,6 +25,6 @@ test("Affiche erreur avec mauvais identifiants", async ({ page }) => {
   await page.fill("input[type='text']", "edgar@gmail.com");
   await page.fill("input[type='password']", "mauvaismdp");
   await page.click("button.login-button");
-  const message = page.locator("text=Invalid username");
+  const message = page.locator("text=Invalid password");
   await expect(message).toBeVisible();
 });

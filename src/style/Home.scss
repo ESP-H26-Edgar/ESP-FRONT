@@ -466,3 +466,29 @@
   font-size: 0.85rem;
   color: var(--color-text-secondary);
 }
+.podium-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.podium-bib {
+  font-weight: 700;
+  font-size: 0.85rem;
+  background: #1a1a2e;
+  color: #fff;
+  border-radius: 20px;
+  padding: 2px 8px;
+  margin-bottom: 4px;
+}
+
+.podium-name {
+  font-size: 0.75rem;
+  margin-bottom: 4px;
+  text-align: center;
+  max-width: 70px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
