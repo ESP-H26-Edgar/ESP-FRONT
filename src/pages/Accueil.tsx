@@ -22,7 +22,6 @@ interface RaceResult {
   id: number;
   course: string;
   podium: [string, string, string];
-  idRace: number;
 }
 
 export default function Accueil() {
@@ -110,7 +109,6 @@ export default function Accueil() {
                     key={r.id}
                     course={r.course}
                     podium={r.podium}
-                    idRace={r.idRace}
                   />
                 )}
               />

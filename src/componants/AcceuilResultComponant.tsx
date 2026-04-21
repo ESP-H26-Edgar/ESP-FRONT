@@ -3,13 +3,11 @@ import { useNavigate } from "react-router-dom";
 interface ResultCardProps {
   course: string;
   podium: [string, string, string];
-  idRace: number;
 }
 
 export default function AccueilResultComponant({
   course,
   podium,
-  idRace,
 }: ResultCardProps) {
   const navigate = useNavigate();
 
