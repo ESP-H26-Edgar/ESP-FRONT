@@ -1,26 +1,42 @@
+import { useNavigate } from "react-router-dom";
+
 interface ResultCardProps {
   course: string;
   podium: [string, string, string];
+  idRace: number;
 }
 
 export default function AccueilResultComponant({
   course,
   podium,
+  idRace,
 }: ResultCardProps) {
+  const navigate = useNavigate();
+
   return (
-    <div className="result-card">
+    <div
+      className="result-card"
+      onClick={() => navigate("/results")}
+      style={{ cursor: "pointer" }}
+    >
       <div className="result-card-podium">
         <div className="podium-visual">
-          <div className="podium-bar p2">2</div>
-          <div className="podium-bar p1">1</div>
-          <div className="podium-bar p3">3</div>
+          <div className="podium-slot p2">
+            <span className="podium-name">{podium[1]}</span>
+            <div className="podium-bar p2">2</div>
+          </div>
+          <div className="podium-slot p1">
+            <span className="podium-name">{podium[0]}</span>
+            <div className="podium-bar p1">1</div>
+          </div>
+          <div className="podium-slot p3">
+            <span className="podium-name">{podium[2]}</span>
+            <div className="podium-bar p3">3</div>
+          </div>
         </div>
       </div>
       <div className="result-card-info">
         <p className="result-name">Résultats de : {course}</p>
-        <p className="result-meta">🥇 {podium[0]}</p>
-        <p className="result-meta">🥈 {podium[1]}</p>
-        <p className="result-meta">🥉 {podium[2]}</p>
       </div>
     </div>
   );

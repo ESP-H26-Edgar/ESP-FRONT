@@ -61,7 +61,9 @@ export default function FormulaireInscription() {
     const inputDate = new Date(date);
     return inputDate > today;
   };
-
+  const isValidPhone = (phone: string) => {
+    return /^[\d\s\-\+\(\)]{10,15}$/.test(phone.trim());
+  };
   const isUnder13 = (date: string) => {
     const today = new Date();
     const birthDate = new Date(date);
@@ -103,6 +105,10 @@ export default function FormulaireInscription() {
     }
     if (isUnder13(form.DateNaissance)) {
       setError("Vous devez avoir au moins 13 ans pour vous inscrire.");
+      return;
+    }
+    if (!isValidPhone(form.Phone)) {
+      setError("Numéro de téléphone invalide.");
       return;
     }
     try {

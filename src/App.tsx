@@ -9,6 +9,8 @@ import Admin from "./pages/AdminPanel";
 import ListeInscrit from "./pages/ListeInscrit";
 import ProtectedRoute from "./ProtectedRoute";
 
+import Results from "./pages/Result";
+
 function App() {
   return (
     <Routes>
@@ -33,6 +35,7 @@ function App() {
       />
 
       <Route path="/inscrits" element={<ListeInscrit />}></Route>
+      <Route path="/results" element={<Results />} />
     </Routes>
   );
 }
