@@ -75,11 +75,11 @@ export default function UpdateRace({ open, onClose, onUpdated, race }: Props) {
   return (
     <>
       <div
-        className={`drawer-overlay ${open ? "open" : ""}`}
+        className={`drawer-overlay ${isOpen ? "open" : ""}`}
         onClick={onClose}
       />
 
-      <aside className={`drawer ${open ? "open" : ""}`}>
+      <aside className={`drawer ${isOpen ? "open" : ""}`}>
         <div className="drawer__header">
           <h2 className="drawer__title">Modifier la course</h2>
           <button className="drawer__close" onClick={onClose}>
