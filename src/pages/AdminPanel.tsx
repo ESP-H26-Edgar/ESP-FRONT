@@ -17,7 +17,7 @@ export default function Admin() {
   const [editDrawerOpen, setEditDrawerOpen] = useState(false);
   const [selectedRace, setSelectedRace] = useState<Race | null>(null);
   const [showUserForm, setShowUserForm] = useState(false);
-
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const isPastRace = (dateString: string) => {
     const today = new Date();
     const raceDate = new Date(dateString);
@@ -180,6 +180,8 @@ export default function Admin() {
                   onSubmit={async (e) => {
                     e.preventDefault();
 
+                    setErrors({});
+
                     const formData = new FormData(e.currentTarget);
 
                     const body = {
@@ -192,33 +194,47 @@ export default function Admin() {
                       birthDate: formData.get("birthDate"),
                     };
 
-                    const res = await fetch("/api/login/register", {
-                      method: "POST",
-                      headers: {
-                        "Content-Type": "application/json",
+                    const res = await fetch(
+                      "http://localhost:5000/api/login/register",
+                      {
+                        method: "POST",
+                        headers: {
+                          "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify(body),
                       },
-                      body: JSON.stringify(body),
-                    });
+                    );
 
-                    if (res.ok) {
-                      alert("Utilisateur créé");
-                      setShowUserForm(false);
-                    } else {
-                      const text = await res.text();
-                      console.log("REGISTER RESPONSE:", text);
-                      alert(text);
+                    const data = await res.json();
+
+                    if (!res.ok) {
+                      const formattedErrors: Record<string, string> = {};
+
+                      data.forEach((err: any) => {
+                        formattedErrors[err.field] = err.message;
+                      });
+
+                      setErrors(formattedErrors);
+                      return;
                     }
+
+                    alert("Utilisateur créé");
+                    setShowUserForm(false);
                   }}
                 >
                   <input name="firstName" placeholder="Prénom" required />
                   <input name="lastName" placeholder="Nom" required />
                   <input name="mail" placeholder="Email" required />
+                  {errors.mail && <p className="error-text">{errors.mail}</p>}
                   <input
                     name="password"
                     type="password"
                     placeholder="Mot de passe"
                     required
                   />
+                  {errors.password && (
+                    <p className="error-text">{errors.password}</p>
+                  )}
 
                   <input
                     name="nationality"
