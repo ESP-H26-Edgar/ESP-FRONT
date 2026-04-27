@@ -12,7 +12,7 @@ import UpdateRace from "../componants/UpdateRace";
 export default function Admin() {
   const [courses, setCourses] = useState<Race[]>([]);
   const [registrations, setRegistrations] = useState<Registration[]>([]);
-  const { GET, DELETE } = useFetch();
+  const { GET, DELETE, POST } = useFetch();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [editDrawerOpen, setEditDrawerOpen] = useState(false);
   const [selectedRace, setSelectedRace] = useState<Race | null>(null);
@@ -194,32 +194,29 @@ export default function Admin() {
                       birthDate: formData.get("birthDate"),
                     };
 
-                    const res = await fetch(
-                      "http://localhost:5000/api/login/register",
-                      {
-                        method: "POST",
-                        headers: {
-                          "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify(body),
-                      },
-                    );
+                    try {
+                      await POST("/api/login/register", body);
 
-                    const data = await res.json();
+                      alert("Utilisateur créé");
+                      setShowUserForm(false);
+                      setErrors({});
+                    } catch (err: any) {
+                      try {
+                        const parsed = JSON.parse(err.message);
 
-                    if (!res.ok) {
-                      const formattedErrors: Record<string, string> = {};
+                        const formattedErrors: Record<string, string> = {};
 
-                      data.forEach((err: any) => {
-                        formattedErrors[err.field] = err.message;
-                      });
+                        parsed.forEach((e: any) => {
+                          formattedErrors[e.field] = e.message;
+                        });
 
-                      setErrors(formattedErrors);
-                      return;
+                        setErrors(formattedErrors);
+                      } catch {
+                        setErrors({
+                          global: err.message || "Erreur inconnue",
+                        });
+                      }
                     }
-
-                    alert("Utilisateur créé");
-                    setShowUserForm(false);
                   }}
                 >
                   <input name="firstName" placeholder="Prénom" required />
