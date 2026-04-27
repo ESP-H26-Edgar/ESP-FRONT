@@ -16,6 +16,7 @@ export default function Admin() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [editDrawerOpen, setEditDrawerOpen] = useState(false);
   const [selectedRace, setSelectedRace] = useState<Race | null>(null);
+  const [showUserForm, setShowUserForm] = useState(false);
 
   const isPastRace = (dateString: string) => {
     const today = new Date();
@@ -112,7 +113,6 @@ export default function Admin() {
             }}
             onUpdated={handleUpdated}
             race={selectedRace}
-            
           />
           <p className="admin-section-title">
             Places restantes — 3 prochaines courses
@@ -155,14 +155,99 @@ export default function Admin() {
           <div className="admin-table-card">
             <div className="admin-table-header">
               <span className="admin-table-title">Gestion des courses</span>
-              <button
-                className="admin-btn-primary"
-                onClick={() => setDrawerOpen(true)}
-              >
-                + Nouvelle course
-              </button>
-            </div>
 
+              <div style={{ display: "flex", gap: "10px" }}>
+                <button
+                  className="admin-btn-secondary"
+                  onClick={() => setShowUserForm((prev) => !prev)}
+                >
+                  + Utilisateur
+                </button>
+
+                <button
+                  className="admin-btn-primary"
+                  onClick={() => setDrawerOpen(true)}
+                >
+                  + Nouvelle course
+                </button>
+              </div>
+            </div>
+            {showUserForm && (
+              <div className="admin-form-card">
+                <h3>Ajouter un utilisateur</h3>
+
+                <form
+                  onSubmit={async (e) => {
+                    e.preventDefault();
+
+                    const formData = new FormData(e.currentTarget);
+
+                    const body = {
+                      mail: formData.get("mail"),
+                      password: formData.get("password"),
+                      firstName: formData.get("firstName"),
+                      lastName: formData.get("lastName"),
+                      nationality: formData.get("nationality"),
+                      gender: formData.get("gender") === "true",
+                      birthDate: formData.get("birthDate"),
+                    };
+
+                    const res = await fetch("/api/login/register", {
+                      method: "POST",
+                      headers: {
+                        "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify(body),
+                    });
+
+                    if (res.ok) {
+                      alert("Utilisateur créé");
+                      setShowUserForm(false);
+                    } else {
+                      const text = await res.text();
+                      console.log("REGISTER RESPONSE:", text);
+                      alert(text);
+                    }
+                  }}
+                >
+                  <input name="firstName" placeholder="Prénom" required />
+                  <input name="lastName" placeholder="Nom" required />
+                  <input name="mail" placeholder="Email" required />
+                  <input
+                    name="password"
+                    type="password"
+                    placeholder="Mot de passe"
+                    required
+                  />
+
+                  <input
+                    name="nationality"
+                    placeholder="Nationalité"
+                    required
+                  />
+
+                  <select name="gender">
+                    <option value="true">Homme</option>
+                    <option value="false">Femme</option>
+                  </select>
+
+                  <input name="birthDate" type="date" required />
+
+                  <div style={{ marginTop: "10px" }}>
+                    <button type="submit" className="admin-btn-primary">
+                      Créer
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setShowUserForm(false)}
+                      style={{ marginLeft: "10px" }}
+                    >
+                      Annuler
+                    </button>
+                  </div>
+                </form>
+              </div>
+            )}
             <table className="admin-table">
               <thead>
                 <tr>
