@@ -83,7 +83,8 @@ export default function Accueil() {
           <section className="home-section">
             <h2 className="section-heading">Courses à venir :</h2>
             <Carousel
-              items={courses}
+              items={courses.filter((c) => new Date(c.date) >= new Date())}
+              visible={4}
               renderItem={(c) => (
                 <AccueilCourseComponant
                   idRace={c.idRace}

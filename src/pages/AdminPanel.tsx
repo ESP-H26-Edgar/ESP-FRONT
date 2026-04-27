@@ -7,12 +7,15 @@ import type { Registration } from "../types/Registration";
 import useFetch from "../service/useFetch";
 import Footer from "../componants/footer";
 import AddRace from "../componants/AddRace";
+import UpdateRace from "../componants/UpdateRace";
 
 export default function Admin() {
   const [courses, setCourses] = useState<Race[]>([]);
   const [registrations, setRegistrations] = useState<Registration[]>([]);
   const { GET, DELETE } = useFetch();
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [editDrawerOpen, setEditDrawerOpen] = useState(false);
+  const [selectedRace, setSelectedRace] = useState<Race | null>(null);
 
   const isPastRace = (dateString: string) => {
     const today = new Date();
@@ -32,7 +35,20 @@ export default function Admin() {
       if (data) setRegistrations(data);
     });
   }, []);
+
   const handleCreated = () => {
+    GET<Race[]>("/api/Race").then((data) => {
+      if (data) setCourses(data);
+    });
+  };
+
+  const handleEdit = (race: Race) => {
+    console.log("EDIT CLICK", race);
+    setSelectedRace(race);
+    setEditDrawerOpen(true);
+  };
+
+  const handleUpdated = () => {
     GET<Race[]>("/api/Race").then((data) => {
       if (data) setCourses(data);
     });
@@ -83,6 +99,21 @@ export default function Admin() {
 
       <div className="home-main">
         <div className="home-content">
+          <AddRace
+            open={drawerOpen}
+            onClose={() => setDrawerOpen(false)}
+            onCreated={handleCreated}
+          />
+          <UpdateRace
+            open={editDrawerOpen}
+            onClose={() => {
+              setEditDrawerOpen(false);
+              setSelectedRace(null);
+            }}
+            onUpdated={handleUpdated}
+            race={selectedRace}
+            
+          />
           <p className="admin-section-title">
             Places restantes — 3 prochaines courses
           </p>
@@ -130,11 +161,6 @@ export default function Admin() {
               >
                 + Nouvelle course
               </button>
-              <AddRace
-                open={drawerOpen}
-                onClose={() => setDrawerOpen(false)}
-                onCreated={handleCreated}
-              />
             </div>
 
             <table className="admin-table">
@@ -172,7 +198,12 @@ export default function Admin() {
                       </td>
                       <td>
                         <div className="admin-actions">
-                          <button className="admin-action-btn">Modifier</button>
+                          <button
+                            className="admin-action-btn"
+                            onClick={() => handleEdit(race)}
+                          >
+                            Modifier
+                          </button>
                           <button
                             className="admin-action-btn danger"
                             onClick={() => handleDelete(race.idRace)}
