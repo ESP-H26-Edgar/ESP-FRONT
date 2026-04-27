@@ -201,21 +201,23 @@ export default function Admin() {
                       setShowUserForm(false);
                       setErrors({});
                     } catch (err: any) {
+                      let parsed;
+
                       try {
-                        const parsed = JSON.parse(err.message);
-
-                        const formattedErrors: Record<string, string> = {};
-
-                        parsed.forEach((e: any) => {
-                          formattedErrors[e.field] = e.message;
-                        });
-
-                        setErrors(formattedErrors);
+                        parsed = JSON.parse(err.message);
                       } catch {
-                        setErrors({
-                          global: err.message || "Erreur inconnue",
-                        });
+                        setErrors({ global: err.message || "Erreur inconnue" });
+                        return;
                       }
+
+                      const formattedErrors: Record<string, string> = {};
+
+                      parsed.forEach((e: any) => {
+                        formattedErrors[e.propertyName || e.field] =
+                          e.errorMessage || e.message;
+                      });
+
+                      setErrors(formattedErrors);
                     }
                   }}
                 >
