@@ -181,3 +181,76 @@
 .admin-action-btn:disabled:hover {
   transform: none;
 }
+.admin-form-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 0.5px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 1.25rem;
+  margin-bottom: 2rem;
+
+  h3 {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: white;
+    margin-bottom: 1rem;
+  }
+
+  form {
+    display: grid;
+    gap: 10px;
+  }
+
+  input,
+  select {
+    background: rgba(255, 255, 255, 0.05);
+    border: 0.5px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    padding: 8px 10px;
+    color: white;
+    font-size: 0.8rem;
+    outline: none;
+    transition: all 0.15s;
+
+    &::placeholder {
+      color: rgba(255, 255, 255, 0.4);
+    }
+
+    &:focus {
+      border-color: #3b82f6;
+      background: rgba(255, 255, 255, 0.08);
+    }
+  }
+
+  select {
+    cursor: pointer;
+  }
+
+  button {
+    font-size: 0.8rem;
+    padding: 6px 14px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+  }
+
+  button[type="submit"] {
+    background: linear-gradient(90deg, #38bdf8, #3b82f6);
+    color: white;
+    font-weight: 600;
+
+    &:hover {
+      opacity: 0.85;
+    }
+  }
+
+  button[type="button"] {
+    background: transparent;
+    border: 0.5px solid rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.6);
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.05);
+      color: white;
+    }
+  }
+}
