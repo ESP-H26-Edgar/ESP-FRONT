@@ -156,7 +156,7 @@ export default function AddRace({ open, onClose, onCreated }: AddRaceProps) {
           </div>
           <div className="drawer__row">
             <div className="drawer__field">
-              <label>Date & heure *</label>
+              <label>Date & heure</label>
               <input
                 type="datetime-local"
                 name="date"
