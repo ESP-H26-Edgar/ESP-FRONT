@@ -11,7 +11,7 @@ interface Props {
 
 export default function UpdateRace({ open, onClose, onUpdated, race }: Props) {
   const { POST } = useFetch();
-
+  const [error, setError] = useState<string | null>(null);
   const [form, setForm] = useState({
     raceName: "",
     idRaceType: 0,
@@ -54,6 +54,15 @@ export default function UpdateRace({ open, onClose, onUpdated, race }: Props) {
   };
 
   const handleSubmit = async () => {
+    if (form.numberPlace <= 0 || form.price <= 0 || form.kilometer <= 0) {
+      setError("Vous avez enregistré des valeur inférieures à 0.");
+      return;
+    }
+    if (new Date(form.date) < new Date()) {
+      setError("La date n'est pas valide");
+      return;
+    }
+    setError(null);
     console.log("SUBMIT CLICKED");
     const formData = new FormData();
     formData.append("IdRace", String(race!.idRace));
@@ -168,7 +177,7 @@ export default function UpdateRace({ open, onClose, onUpdated, race }: Props) {
             />
           </div>
         </div>
-
+        {error && <p className="drawer__error">{error}</p>}
         <div className="drawer__footer">
           <button className="drawer__btn-cancel" onClick={onClose}>
             Annuler
