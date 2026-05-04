@@ -68,7 +68,7 @@ function Form({ race }: { race: Race }) {
   );
 }
 
-// ─── Page principale ──────────────────────────────────────────────────────────
+//aide de l'ia pour la page de payement
 export default function PaiementPage() {
   const location = useLocation();
   const navigate = useNavigate();

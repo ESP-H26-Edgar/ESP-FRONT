@@ -12,7 +12,7 @@ export default function PayementConfirmation() {
   const [status, setStatus] = useState<"success" | "error" | "loading">(
     "loading",
   );
-
+  //aide de l'ia pour récuperer les information venant de stripes
   useEffect(() => {
     const clientSecret = new URLSearchParams(window.location.search).get(
       "payment_intent_client_secret",
