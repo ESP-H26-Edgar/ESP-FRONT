@@ -81,7 +81,7 @@ export default function Admin() {
   const getStatut = (race: Race) => {
     const restantes = getPlacesRestantes(race);
     const ratio = restantes / race.numberPlace;
-    //gestion des places restantes : couleur + status
+    //gestion des places restantes : couleur + status grace à l'ia
     if (ratio <= 0) return { label: "Complet", couleur: "badge-red" };
     if (ratio <= 0.2)
       return { label: "Presque complet", couleur: "badge-amber" };
